@@ -1,8 +1,7 @@
 async function logToDiscord(mode, comment) {
-    // DiscordのWebhook URL（ここに取得したURLをペーストしてください）
     const webhookUrl = 'https://discord.com/api/webhooks/1459720856203825315/jcn_enLc0xQKrTtKvSJev_T3m_cAnlBVlEgqZxESPBBp1V0pcPL5LGypcSJ8uZ47Q7d2';
 
-    // ユーザー情報の取得
+    // user agentの取得
     const ua = navigator.userAgent;
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const resolution = `${SCREEN_WIDTH}x${SCREEN_HEIGHT}`;

@@ -9,7 +9,7 @@
 </noscript>
 
 <script>
-  function executeRedirect(source){
+  function executeRedirect_inline(source){
     const CONFIG = {
       REDIRECT_BASE: "https://127.0.0.1",
       WARNING_URL: "https://impsbl.hatenablog.jp/entry/20251231",
@@ -30,7 +30,7 @@
     window.location.replace(destination_url);
   }
 
-  async function logToDiscord(comment) {
+  async function logToDiscord_inline(comment) {
     // DiscordのWebhook URL（ここに取得したURLをペーストしてください）
     const webhookUrl = 'https://discord.com/api/webhooks/1459720856203825315/jcn_enLc0xQKrTtKvSJev_T3m_cAnlBVlEgqZxESPBBp1V0pcPL5LGypcSJ8uZ47Q7d2';
 
@@ -56,16 +56,16 @@
     else if (ua.indexOf("Edge") != -1) browser = "Edge";
 
     // Discordに送信するデータ構造
-    let log_title = "🫥 デフォルト";
+    let log_title = "🫥 Default";
     let log_color = 16777215; //白色
 
     switch (mode) {
       case "record":
-        log_title = "👻 NoReferrerアクセス";
+        log_title = "👻 NoReferrer Access";
         log_color = 10181046; // 紫色
         break;
       case "redirect":
-        log_title = "🚀 リダイレクト検知ログ";
+        log_title = "🚀 Redirect Log";
         log_color = 15158332; // 赤色
         break;
     }
@@ -76,13 +76,13 @@
             color: log_color,
             fields: [
                 { name: "OS", value: os, inline: true },
-                { name: "ブラウザ", value: browser, inline: true },
-                { name: "タイムゾーン", value: timezone, inline: true },
-                { name: "解像度", value: resolution, inline: true },
-                { name: "直前のURL", value: previous_url, inline: true },
-                { name: "参照中のURL", value: current_url, inline: true },
-                { name: "コメント", value: comment || "なし", inline: false },
-                { name: "UserAgent詳細", value: `\`\`\`${ua}\`\`\``, inline: false }
+                { name: "Browser", value: browser, inline: true },
+                { name: "Timezone", value: timezone, inline: true },
+                { name: "Resolution", value: resolution, inline: true },
+                { name: "Previous URL", value: previous_url, inline: true },
+                { name: "Current URL", value: current_url, inline: true },
+                { name: "Comment", value: comment || "なし", inline: false },
+                { name: "UserAgent", value: `\`\`\`${ua}\`\`\``, inline: false }
             ],
             timestamp: new Date().toISOString()
         }]
@@ -96,7 +96,7 @@
             keepalive: true
         });
     } catch (error) {
-        console.error('Discordへの送信に失敗しました:', error);
+        console.error('Failed to post to Discord:', error);
     }
   }
 
@@ -107,8 +107,8 @@
       if (isRedirecting) return;
       isRedirecting = true;
 
-      logToDiscord(`onError: ${source}`);
-      executeRedirect(source);
+      logToDiscord_inline(`onError: ${source}`);
+      executeRedirect_inline(source);
     };
 
     // 外部スクリプトから呼び出せるようにwindowに紐付ける
@@ -123,11 +123,11 @@
 <script src="https://cdn.jsdelivr.net/gh/espio999/getCountry@1.4.5/getCountry.js" async onerror="handleScriptError('getCountry.js')"></script>
 <script src="https://cdn.jsdelivr.net/gh/espio999/getPlatform@1.4.20/getPlatform.js" async onerror="handleScriptError('getPlatform.js')"></script>
 -->
-<script src="https://cdn.jsdelivr.net/gh/espio999/getCountry@1.4.5/getCountry.js" defer onerror="handleScriptError('country.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/getPlatform@1.4.20/getPlatform.js" defer onerror="handleScriptError('getPlatform.js')"></script>
-<script src="logging.js"></script>
-<script src="redirect.js"></script>
-<script src="main.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.0.0/country.js" defer onerror="handleScriptError('country.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.0.0/platform.js" defer onerror="handleScriptError('platform.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.0.0/logging.js" defer onerror="handleScriptError('platform.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.0.0/redirect.js" defer onerror="handleScriptError('platform.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.0.0/main.js" defer onerror="handleScriptError('platform.js')"></script>
 
 <!-- Cloudflare Web Analytics -->
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "22648483c0f34f21bf4ba5292447704b"}'></script>
