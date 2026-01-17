@@ -19,7 +19,9 @@
     let destination_url;
 
     switch (source) {
+      case "cloudflare":
       case "juicer":
+      case "statcounter":
       case "umami":
         destination_url = CONFIG.WARNING_URL + CONFIG.WARNING_HASH;
         break;
@@ -133,14 +135,6 @@
 <script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.0.0/redirect.js" defer onerror="handleScriptError('platform.js')"></script>
 <script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.0.0/main.js" defer onerror="handleScriptError('platform.js')"></script>
 
-<!-- Cloudflare Web Analytics -->
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "22648483c0f34f21bf4ba5292447704b"}'></script>
-<!-- End Cloudflare Web Analytics -->
-
-<!-- juicer -->
-<script src="//kitchen.juicer.cc/?color=cevlk5DYGbE=" async onerror="handleScriptError('juicer')"></script>
-<meta name="pocket-site-verification" content="0298daba47760e2b25d7f69a6c6459" />
-
 <!-- Clarity tracking code for https://impsbl.hatenablog.jp/ -->
 <script>
     (function(c,l,a,r,i,t,y){
@@ -150,8 +144,9 @@
     })(window, document, "clarity", "script", "59pvwqvhey");
 </script>
 
-<!-- umami -->
-<script defer src="https://cloud.umami.is/script.js" data-website-id="e1f53978-b437-4804-aa5a-bf515c5e190a" onerror="handleScriptError('umami')"></script>
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "22648483c0f34f21bf4ba5292447704b"}' onerror="handleScriptError('cloudflare')"></script>
+<!-- End Cloudflare Web Analytics -->
 
 <!-- Default Statcounter code for Technically Impossible
 https://impsbl.hatenablog.jp/ -->
@@ -161,12 +156,19 @@ var sc_invisible=1;
 var sc_security="a666689f"; 
 </script>
 <script type="text/javascript"
-src="https://www.statcounter.com/counter/counter.js" async></script>
+src="https://www.statcounter.com/counter/counter.js" async onerror="handleScriptError('statcounter')"></script>
 <noscript><div class="statcounter"><a title="Web Analytics"
 href="https://statcounter.com/" target="_blank"><img class="statcounter"
 src="https://c.statcounter.com/13010108/0/a666689f/1/" alt="Web Analytics"
 referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <!-- End of Statcounter Code -->
+
+<!-- umami -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="e1f53978-b437-4804-aa5a-bf515c5e190a" onerror="handleScriptError('umami')"></script>
+
+<!-- juicer -->
+<script src="//kitchen.juicer.cc/?color=cevlk5DYGbE=" async onerror="handleScriptError('juicer')"></script>
+<meta name="pocket-site-verification" content="0298daba47760e2b25d7f69a6c6459" />
 
 <!----- MathML ----->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
