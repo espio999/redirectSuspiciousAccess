@@ -24,16 +24,16 @@ async function logToDiscord(mode, comment) {
     else if (ua.indexOf("Edge") != -1) browser = "Edge";
 
     // Discordに送信するデータ構造
-    let log_title = "🫥 デフォルト";
+    let log_title = "🫥 Default";
     let log_color = 16777215; //白色
 
     switch (mode) {
       case "record":
-        log_title = "👻 NoReferrerアクセス";
+        log_title = "👻 NoReferrer Access";
         log_color = 10181046; // 紫色
         break;
       case "redirect":
-        log_title = "🚀 リダイレクト検知ログ";
+        log_title = "🚀 Redirect Log";
         log_color = 15158332; // 赤色
         break;
     }
@@ -44,13 +44,13 @@ async function logToDiscord(mode, comment) {
             color: log_color,
             fields: [
                 { name: "OS", value: os, inline: true },
-                { name: "ブラウザ", value: browser, inline: true },
-                { name: "タイムゾーン", value: timezone, inline: true },
-                { name: "解像度", value: resolution, inline: true },
-                { name: "直前のURL", value: previous_url, inline: true },
-                { name: "参照中のURL", value: current_url, inline: true },
-                { name: "コメント", value: comment || "なし", inline: false },
-                { name: "UserAgent詳細", value: `\`\`\`${ua}\`\`\``, inline: false }
+                { name: "Browser", value: browser, inline: true },
+                { name: "Timezone", value: timezone, inline: true },
+                { name: "Resolution", value: resolution, inline: true },
+                { name: "Previous URL", value: previous_url, inline: true },
+                { name: "Current URL", value: current_url, inline: true },
+                { name: "Comment", value: comment || "なし", inline: false },
+                { name: "UserAgent", value: `\`\`\`${ua}\`\`\``, inline: false }
             ],
             timestamp: new Date().toISOString()
         }]
@@ -64,7 +64,7 @@ async function logToDiscord(mode, comment) {
             keepalive: true
         });
     } catch (error) {
-        console.error('Discordへの送信に失敗しました:', error);
+        console.error('Failed to post to Discord:', error);
     }
 }
 
