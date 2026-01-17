@@ -1,0 +1,66 @@
+<html>
+<head>
+  <script src="country.js"></script>
+  <script src="platform.js"></script>
+  <script src="logging.js"></script>
+  <script src="redirect.js"></script>
+  <script src="main.js"></script>
+</head>
+<body>
+  <script>
+    document.body.insertAdjacentHTML('beforeend', `<p>USER_REFERRER = ${USER_REFERRER}</p>`);
+    document.body.insertAdjacentHTML('beforeend', `<p>USER_OS = ${USER_OS}</p>`);
+    document.body.insertAdjacentHTML('beforeend', `<p>USER_BROWSER = ${USER_BROWSER}</p>`);
+        document.body.insertAdjacentHTML('beforeend', `<p>SCREEN_WIDTH = ${SCREEN_WIDTH}</p>`);
+    document.body.insertAdjacentHTML('beforeend', `<p>SCREEN_HEIGHT = ${SCREEN_HEIGHT}</p>`);
+  </script>
+  <hr />
+  test - getCountry
+  <script>
+    document.body.insertAdjacentHTML('beforeend', `<p>referrer = ${Intl.DateTimeFormat().resolvedOptions().timeZone}</p>`);
+    document.body.insertAdjacentHTML('beforeend', `<p>${getCountry()}</p>`);
+    document.body.insertAdjacentHTML('beforeend', `<p>${getState()}</p>`);
+  </script>
+  <hr />
+  test - isApple
+  <script>
+    document.body.insertAdjacentHTML('beforeend', `<p>${isApple()}</p>`);
+  </script>
+  <hr />
+  test - isLinux
+  <script>
+    document.body.insertAdjacentHTML('beforeend', `<p>${isLinux()}</p>`);
+  </script>
+  <hr />
+  test - isChrome
+  <script>
+    document.body.insertAdjacentHTML('beforeend', `<p>${isChrome()}</p>`);
+  </script>
+  <hr />
+  test - isProhibitedEnvironment
+  <script>
+    document.body.insertAdjacentHTML('beforeend', `<p>${isProhibitedEnvironment()}</p>`);
+  </script>
+  <hr />
+  test - isUnknownDevice
+  <script>
+    document.body.insertAdjacentHTML('beforeend', `<p>${isUnknownDevice()}</p>`);
+  </script>
+  <hr />
+  test - isInappropriateResolution
+  <script>
+    document.body.insertAdjacentHTML('beforeend', `<p>${isInappropriateResolution()}</p>`);
+  </script>
+  <hr />
+  test - isProhibitedTimezone
+  <script>
+    document.body.insertAdjacentHTML('beforeend', `<p>${isProhibitedTimezone()}</p>`);
+  </script>
+  <hr />
+  test - redirectSuspiciousAccess
+  <script>
+    document.body.insertAdjacentHTML('beforeend', `<p>${redirectSuspiciousAccess()}</p>`);
+  </script>
+  <hr />
+</body>
+</html>
