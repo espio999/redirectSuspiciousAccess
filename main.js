@@ -124,19 +124,14 @@ function isProhibitedTimezone(){
 }
 
 
-function recordNoReferrerAccess(){
-   logToDiscord("record", "no referrer");
-}
-
-
-function redirectSuspiciousAccess() {
+async function redirectSuspiciousAccess() {
   // リファラをチェック（あれば即終了、なければ検閲続行）
   if (USER_REFERRER) {
     return;
   }
   else{
     // リファラのないアクセスを記録
-    recordNoReferrerAccess();
+    await logToDiscord("record", "no referrer");
   }
 
   // timezoneをチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
@@ -179,4 +174,4 @@ const is_undefined = (typeof window === 'undefined' || typeof screen === 'undefi
 const SCREEN_WIDTH = (is_undefined) ? 0 : screen.width;
 const SCREEN_HEIGHT = (is_undefined) ? 0 : screen.height;
 
-redirectSuspiciousAccess();
+//redirectSuspiciousAccess();
