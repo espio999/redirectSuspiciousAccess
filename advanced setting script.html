@@ -102,7 +102,7 @@
   (function() {
     let isRedirecting = false;
 
-    const redirect = (source) => {
+    const redirect_inline = (source) => {
       if (isRedirecting) return;
       isRedirecting = true;
 
@@ -117,7 +117,7 @@
 
     // 外部スクリプトから呼び出せるようにwindowに紐付ける
     window.handleScriptError = function(source) {
-      redirect(source);
+      redirect_inline(source);
     };
   })();
 </script>
