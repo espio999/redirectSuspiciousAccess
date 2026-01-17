@@ -136,24 +136,24 @@ async function redirectSuspiciousAccess() {
 
   // timezoneをチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
   if (isProhibitedTimezone()){
-    executeLoggingAndRedirect("redirect", "timezone");
+    executeLoggingAndRedirect("timezone");
   }
 
   // 解像度をチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
   if (isInappropriateResolution()){
-    executeLoggingAndRedirect("redirect", "resolution");
+    executeLoggingAndRedirect("resolution");
     return;
   }
 
   // デバイス名が不明かチェック（不明ならリダイレクト、そうでなければ次の検閲へ）
   if (isUnknownDevice()) {
-    executeLoggingAndRedirect("redirect", "unknown device");
+    executeLoggingAndRedirect("unknown device");
     return;
   }
 
   // 4. 特定の組合せのプラットフォームをチェック（対象ならリダイレクト、そうでなければ即終了）
   if (isProhibitedEnvironment()) {
-    executeLoggingAndRedirect("redirect", "environment");
+    executeLoggingAndRedirect("environment");
     return;
   }
 
