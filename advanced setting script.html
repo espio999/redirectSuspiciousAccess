@@ -19,6 +19,7 @@
     let destination_url;
 
     switch (source) {
+      case "juicer":
       case "umami":
         destination_url = CONFIG.WARNING_URL + CONFIG.WARNING_HASH;
         break;
@@ -133,7 +134,7 @@
 <!-- End Cloudflare Web Analytics -->
 
 <!-- juicer -->
-<script src="//kitchen.juicer.cc/?color=cevlk5DYGbE=" async></script>
+<script src="//kitchen.juicer.cc/?color=cevlk5DYGbE=" async onerror="handleScriptError('juicer')"></script>
 <meta name="pocket-site-verification" content="0298daba47760e2b25d7f69a6c6459" />
 
 <!-- Clarity tracking code for https://impsbl.hatenablog.jp/ -->
