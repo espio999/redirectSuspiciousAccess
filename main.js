@@ -28,6 +28,11 @@ function isChrome(){
   return !!(USER_BROWSER && my_reg.test(USER_BROWSER));
 }
 
+function isFirefox(){
+  const my_reg = /Firefox/i;
+  return !!(USER_BROWSER && my_reg.test(USER_BROWSER));
+}
+
 
 function isProhibitedEnvironment() {
   // OS、ブラウザ、スクリーン解像度の組合せを保持しておく
@@ -35,16 +40,20 @@ function isProhibitedEnvironment() {
   const prohibitedCombinations = [
     { os: '', browser: 'Chrome', width: 412, height: 915 },
     { os: 'Android', browser: 'Chrome', width: 375, height: 812 },
+    { os: 'Linux', browser: 'Firefox', width: 1200, height: 1920 },
     { os: 'Linux', browser: 'Chrome', width: 1280, height: 720 },
     { os: 'Linux', browser: 'Chrome', width: 1280, height: 800 },
+    { os: 'Linux', browser: 'Firefox', width: 1671, height: 1114 },
     { os: 'Mac OS', browser: 'Chrome', width: 800, height: 600 },
     { os: 'Mac OS', browser: 'Chrome', width: 1920, height: 1080 },
     { os: 'OS X', browser: 'Chrome', width: 800, height: 600 },
     { os: 'OS X', browser: 'Chrome', width: 1920, height: 1080 },
     { os: 'iOS', browser: '', width: 375, height: 812 },
     { os: 'iOS', browser: 'Chrome', width: 800, height: 600 },
+    { os: 'Windows', browser: 'Chrome', width: 1200, height: 3000 },
     { os: 'Windows', browser: 'Chrome', width: 1280, height: 1200 },
-    { os: 'Windows', browser: 'Chrome', width: 1366, height: 768 }
+    { os: 'Windows', browser: 'Chrome', width: 1366, height: 768 },
+    { os: 'Windows', browser: 'Firefox', width: 1600, height: 900 }
   ];
 
   // Linuxの特定
@@ -55,9 +64,10 @@ function isProhibitedEnvironment() {
   let ret = isApple();
   currentOS = ret ?? currentOS;
 
-  //Chromeの特定
+  //Chrome, Firefoxの特定
   let currentBrowser = USER_BROWSER;
   currentBrowser = (isChrome()) ? "Chrome" : currentBrowser;
+  currentBrowser = (isFirefox()) ? "Firefox" : currentBrowser;
 
   // 判定した値の組合せが、あらかじめ保持していた組合せに含まれるかを確認する
   // Array.prototype.some() は、条件に一致する要素が一つでもあれば true を返す
