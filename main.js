@@ -131,7 +131,7 @@ function isInappropriateResolution(){
 function isProhibitedTimezone(){
   const prohibited_countries = ["Angola", "China", "Hong Kong", "Singapore"];
 
-  return prohibited_countries.includes(USER_COUNTRY);
+  return USER_COUNTRY === null || prohibited_countries.includes(USER_COUNTRY);
 }
 
 
