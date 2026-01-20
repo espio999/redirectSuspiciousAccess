@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <script src="country.js"></script>
+  </head>
+  <body>
+    <script defer>
+      /*
+      テスト実行用ヘルパー関数
+      @param {string} tzName - シミュレートするタイムゾーン名
+      */
+      function runTest(tzName) {
+          // 1. Intl.DateTimeFormat の挙動を一時的に書き換えてタイムゾーンを固定
+          const originalResolvedOptions = Intl.DateTimeFormat.prototype.resolvedOptions;
+          Intl.DateTimeFormat.prototype.resolvedOptions = function() {
+              return { timeZone: tzName };
+          };
+
+          console.log(`--- Test for Timezone: ${tzName} ---`);
+          
+          // 2. 関数の実行
+          const country = getCountry();
+          const state = getState();
+
+          // 3. 結果の出力
+          console.log(`Result getCountry(): ${country}`);
+          console.log(`Result getState()  : ${state}`);
+          console.log("");
+
+          // 4. 元の関数に戻す
+          Intl.DateTimeFormat.prototype.resolvedOptions = originalResolvedOptions;
+      }
+
+      // --- テストケースの実行 ---
+      // 中国（上海）- 直接定義されているケース
+      runTest("Asia/Shanghai"); 
+      // 期待値: Country: "China", State: "Shanghai"
+
+      // 中国（重慶）- エイリアス(a)が設定されているケース
+      runTest("Asia/Chongqing"); 
+      // 期待値: Country: "China", State: "Shanghai" (エイリアス参照先)
+
+      // 日本（東京）- 定義があるケース
+      runTest("Asia/Tokyo"); 
+      // 期待値: Country: "Japan", State: "Tokyo"
+
+      // アメリカ（ニューヨーク）
+      runTest("America/New_York"); 
+      // 期待値: Country: "United States of America", State: "New York"
+
+      // リストに存在しないタイムゾーン
+      runTest("Antarctica/Unknown_Place"); 
+      // 期待値: Country: null, State: "Antarctica/Unknown_Place" (入力値がそのまま返る)
+
+      // Etc/UTC
+      runTest("Etc/UTC"); 
+      // 期待値: Country: null, State: "UTC"
+
+      // UTC
+      runTest("UTC"); 
+      // 期待値: Country: null, State: "UTC" (入力値がそのまま返る)
+
+      // Etc/GMT
+      runTest("Etc/GMT"); 
+      // 期待値: Country: null, State: "GMT"
+      
+      // GMT
+      runTest("GMT"); 
+      // 期待値: Country: null, State: "GMT" (入力値がそのまま返る)
+
+    </script>
+  </body>
+</html>
+ 

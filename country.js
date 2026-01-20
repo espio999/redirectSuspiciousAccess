@@ -2856,28 +2856,48 @@ function getCountry() {
 		}
 	};
 
-	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	const timezone_user = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-	if (timezone === "" || !timezone) {
-		return null;
+	// タイムゾーンが未定義の場合、nullを返す。
+	if (timezone_user === "" || !timezone_user) return null;
+
+	// 該当するタイムゾーンを検索
+	// 未定義の場合、nullを返す。
+	let tz_item = timezones[timezone_user];
+	if (!tz_item) return null;
+
+	// タイムゾーンのエイリアス処理。
+	if (tz_item.a) tz_item = timezones[tz_item.a];
+	
+	// タイムゾーンから国名を取得する。
+	if (tz_item && tz_item.c && tz_item.c.length > 0) {
+		return countries[tz_item.c[0]] || null;
 	}
 
+	return null;
+
+	/*
 	const _country = timezones[timezone].c[0];
 	const country = countries[_country];
 	return country;
+	*/
 }
 
 function getState(){
-		const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	const timezone_user = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-	if (timezone === "" || !timezone) {
-		return null;
-	}
-	
-	const state = timezone.split("/")[1].replace("_", " ")
-	
+	// タイムゾーンが未定義の場合、nullを返す。
+	if (timezone_user === "" || !timezone_user) return null;
+
+	console.log(`timezone_user  : ${timezone_user}`);
+
+	var parts = timezone_user.split('/');
+	return parts.length > 1 ? parts[parts.length - 1].replace(/_/g, ' ') : timezone_user;
+
+	/*
+	const state = timezone_user.split("/")[1].replace("_", " ")
 	return state
-	
+	*/
 }
 
 //const $country = document.querySelector(`#country`);

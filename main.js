@@ -51,6 +51,7 @@ function isProhibitedEnvironment() {
     { os: 'iOS', browser: '', width: 375, height: 812 },
     { os: 'iOS', browser: 'Chrome', width: 800, height: 600 },
     { os: 'Windows', browser: 'Chrome', width: 1200, height: 3000 },
+    { os: 'Windows', browser: 'Chrome', width: 1200, height: 1280 },
     { os: 'Windows', browser: 'Chrome', width: 1280, height: 1200 },
     { os: 'Windows', browser: 'Chrome', width: 1366, height: 768 },
     { os: 'Windows', browser: 'Firefox', width: 1600, height: 900 }
@@ -116,6 +117,7 @@ function isInappropriateResolution(){
     //"1280,720",
     //"1280,800",
     "1200,3000",
+    "1200,1280",
     "1280,1200",
     "1366,1366",
     "1600,1600",
