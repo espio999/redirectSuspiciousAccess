@@ -28,9 +28,23 @@ function isChrome(){
   return !!(USER_BROWSER && my_reg.test(USER_BROWSER));
 }
 
+
 function isFirefox(){
   const my_reg = /Firefox/i;
   return !!(USER_BROWSER && my_reg.test(USER_BROWSER));
+}
+
+
+function getBrowserFamily(){
+  const categories = ["Chrome", "Firefox", "Safari"];
+
+  const reg_chrome = /Chrome/i;
+  const reg_firefox = /Firefox/i;
+  const reg_safari = /Safari/i;
+
+  const categoryIndex = [reg_chrome, reg_firefox, reg_safari].findIndex(reg => reg.test(USER_BROWSER));
+  
+  return categories[categoryIndex] ?? null;
 }
 
 
@@ -50,6 +64,7 @@ function isProhibitedEnvironment() {
     { os: 'OS X', browser: 'Chrome', width: 1920, height: 1080 },
     { os: 'iOS', browser: '', width: 375, height: 812 },
     { os: 'iOS', browser: 'Chrome', width: 800, height: 600 },
+    { os: 'iOS', browser: 'Safari', width: 390, height: 844 },
     { os: 'Windows', browser: 'Chrome', width: 1200, height: 3000 },
     { os: 'Windows', browser: 'Chrome', width: 1200, height: 1280 },
     { os: 'Windows', browser: 'Chrome', width: 1280, height: 1200 },
@@ -61,14 +76,19 @@ function isProhibitedEnvironment() {
   let currentOS = USER_OS;
   currentOS = (isLinux()) ? "Linux" : currentOS;
 
-  //Apple製品の判定
-  let ret = isApple();
-  currentOS = ret ?? currentOS;
+  //Apple製品の特定
+  let ret_isApple = isApple();
+  currentOS = ret_isApple ?? currentOS;
 
-  //Chrome, Firefoxの特定
+  //ブラウザの特定
   let currentBrowser = USER_BROWSER;
+  let ret_getBrowserFamily = getBrowserFamily();
+  currentBrowser = ret_getBrowserFamily ?? currentBrowser;
+  /*
+  //Chrome, Firefoxの特定
   currentBrowser = (isChrome()) ? "Chrome" : currentBrowser;
   currentBrowser = (isFirefox()) ? "Firefox" : currentBrowser;
+  */
 
   // 判定した値の組合せが、あらかじめ保持していた組合せに含まれるかを確認する
   // Array.prototype.some() は、条件に一致する要素が一つでもあれば true を返す
