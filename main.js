@@ -48,14 +48,18 @@ function getBrowserFamily(){
 }
 
 
+async function executeLoggingAndRedirect(reason) {
+  await logToDiscord("redirect", reason);
+  executeRedirect(reason);
+}
+
+
 function isProhibitedEnvironment() {
   // OS、ブラウザ、スクリーン解像度の組合せを保持しておく
   // 検閲対象リスト
   const prohibitedCombinations = [
     { os: '', browser: 'Chrome', width: 412, height: 915 },
     { os: 'Android', browser: 'Chrome', width: 375, height: 812 },
-    { os: 'Android', browser: 'Chrome', width: 600, height: 800 },
-    { os: 'Android', browser: 'Chrome', width: 800, height: 600 },
     { os: 'Linux', browser: 'Firefox', width: 1200, height: 1920 },
     { os: 'Linux', browser: 'Chrome', width: 1280, height: 720 },
     { os: 'Linux', browser: 'Chrome', width: 1280, height: 800 },
@@ -65,9 +69,8 @@ function isProhibitedEnvironment() {
     { os: 'OS X', browser: 'Chrome', width: 800, height: 600 },
     { os: 'OS X', browser: 'Chrome', width: 1920, height: 1080 },
     { os: 'iOS', browser: '', width: 375, height: 812 },
-    { os: 'iOS', browser: 'Safari', width: 390, height: 844 },
-    { os: 'iOS', browser: 'Chrome', width: 600, height: 800 },
     { os: 'iOS', browser: 'Chrome', width: 800, height: 600 },
+    { os: 'iOS', browser: 'Safari', width: 390, height: 844 },
     { os: 'Windows', browser: 'Chrome', width: 1200, height: 3000 },
     { os: 'Windows', browser: 'Chrome', width: 1200, height: 1280 },
     { os: 'Windows', browser: 'Chrome', width: 1280, height: 1200 },
@@ -113,20 +116,10 @@ function isProhibitedEnvironment() {
 }
 
 
-function isUnknownDevice(){
-  // ブラウザ、OSが不明か判定
-  //!null-->true
-  const isNull_browser = !USER_BROWSER;
-  const isNull_os = !USER_OS;
+function isProhibitedTimezone(){
+  const prohibited_countries = ["Angola", "China", "Hong Kong", "Singapore"];
 
-  //ブラウザ、OSの一方が不明ならtrueを返す。
-  return isNull_browser || isNull_os;
-}
-
-
-async function executeLoggingAndRedirect(reason) {
-  await logToDiscord("redirect", reason);
-  executeRedirect(reason);
+  return USER_COUNTRY === null || prohibited_countries.includes(USER_COUNTRY);
 }
 
 
@@ -153,16 +146,61 @@ function isInappropriateResolution(){
 }
 
 
-function isProhibitedTimezone(){
-  const prohibited_countries = ["Angola", "China", "Hong Kong", "Singapore"];
+function isUnknownDevice(){
+  // ブラウザ、OSが不明か判定
+  //!null-->true
+  const isNull_browser = !USER_BROWSER;
+  const isNull_os = !USER_OS;
 
-  return USER_COUNTRY === null || prohibited_countries.includes(USER_COUNTRY);
+  //ブラウザ、OSの一方が不明ならtrueを返す。
+  return isNull_browser || isNull_os;
+}
+
+
+function isE2Etest(){
+  //E2Eテストライブラリのオブジェクトを確認
+  //一つでもロードされているとtruthy→一つ目の!でfalse、二つ目の!でtrue
+  //一つもロードされていないとfalse →一つ目の!でtrue、二つ目の!でfalse
+  const isBot = !!(
+    window.__nightmare || 
+    navigator.webdriver || 
+    window.Cypress || 
+    window._phantom
+  );
+
+  //言語設定されていない状況を判定
+  const hasNoLanguage = !!(navigator.languages && navigator.languages.length === 0);
+
+  return (isBot || hasNoLanguage);
+}
+
+
+function isFriendlyBot(){
+  const bot_list = [
+    'Googlebot',            // Google
+    'bingbot',              // Bing / Microsoft Ads
+    'Applebot',             // Apple (Siri/Spotlight)
+    'DuckDuckBot',          // DuckDuckGo
+    'Y!J-',                 // Yahoo! JAPAN (独自の巡回ボット)
+    //'Baiduspider',          // Baidu (中国最大手)
+    //'YandexBot',            // Yandex (ロシア最大手)
+    //'facebookexternalhit',  // Facebookのリンクプレビュー
+    'Slackbot',             // Slackのリンク展開
+    'Twitterbot',           // X (Twitter) のリンク展開
+    //'PerplexityBot'         // AI検索 (Perplexity)
+  ];
+
+  const reg_bot = new RegExp(bot_list.join('|'), 'i');
+  return reg_bot.test(window.document.userAgent);
 }
 
 
 async function redirectSuspiciousAccess() {
   // リファラをチェック（あれば即終了、なければ検閲続行）
-  if (USER_REFERRER) {
+  // 友好的ボットを確認
+  // E2Eライブラリ有無を確認
+  // 友好的ボットでE2Eライブラリ無しであれば、即終了
+  if (USER_REFERRER || (isFriendlyBot() && !isE2Etest())) {
     return;
   }
   else{
