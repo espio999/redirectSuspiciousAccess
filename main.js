@@ -167,9 +167,10 @@ async function redirectSuspiciousAccess() {
     await logToDiscord("record", "no referrer");
   }
 
-  // timezoneをチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
-  if (isProhibitedTimezone()){
-    executeLoggingAndRedirect("timezone");
+  // デバイス名が不明かチェック（不明ならリダイレクト、そうでなければ次の検閲へ）
+  if (isUnknownDevice()) {
+    executeLoggingAndRedirect("unknown device");
+    return;
   }
 
   // 解像度をチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
@@ -178,13 +179,12 @@ async function redirectSuspiciousAccess() {
     return;
   }
 
-  // デバイス名が不明かチェック（不明ならリダイレクト、そうでなければ次の検閲へ）
-  if (isUnknownDevice()) {
-    executeLoggingAndRedirect("unknown device");
-    return;
+  // timezoneをチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
+  if (isProhibitedTimezone()){
+    executeLoggingAndRedirect("timezone");
   }
 
-  // 4. 特定の組合せのプラットフォームをチェック（対象ならリダイレクト、そうでなければ即終了）
+  // 特定の組合せのプラットフォームをチェック（対象ならリダイレクト、そうでなければ即終了）
   if (isProhibitedEnvironment()) {
     executeLoggingAndRedirect("environment");
     return;
