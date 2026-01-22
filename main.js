@@ -61,6 +61,8 @@ function isProhibitedEnvironment() {
     { os: '', browser: 'Chrome', width: 412, height: 915 },
     { os: 'Android', browser: 'Chrome', width: 375, height: 812 },
     { os: 'Android', browser: 'Chrome', width: 393, height: 873 },
+    { os: 'Android', browser: 'Firefox', width: 432, height: 964 },
+    { os: 'Android', browser: 'Firefox', width: 964, height: 432 },
     { os: 'Linux', browser: 'Firefox', width: 1200, height: 1920 },
     { os: 'Linux', browser: 'Chrome', width: 1280, height: 720 },
     { os: 'Linux', browser: 'Chrome', width: 1280, height: 800 },
