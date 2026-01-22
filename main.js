@@ -50,7 +50,7 @@ function getBrowserFamily(){
 
 async function executeLoggingAndRedirect(reason) {
   await logToDiscord("redirect", reason);
-  executeRedirect(reason);
+  await executeRedirect(reason);
 }
 
 
@@ -213,24 +213,24 @@ async function redirectSuspiciousAccess() {
 
   // デバイス名が不明かチェック（不明ならリダイレクト、そうでなければ次の検閲へ）
   if (isUnknownDevice()) {
-    executeLoggingAndRedirect("unknown device");
+    await executeLoggingAndRedirect("unknown device");
     return;
   }
 
   // 解像度をチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
   if (isInappropriateResolution()){
-    executeLoggingAndRedirect("resolution");
+    await executeLoggingAndRedirect("resolution");
     return;
   }
 
   // timezoneをチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
   if (isProhibitedTimezone()){
-    executeLoggingAndRedirect("timezone");
+    await executeLoggingAndRedirect("timezone");
   }
 
   // 特定の組合せのプラットフォームをチェック（対象ならリダイレクト、そうでなければ即終了）
   if (isProhibitedEnvironment()) {
-    executeLoggingAndRedirect("environment");
+    await executeLoggingAndRedirect("environment");
     return;
   }
 
