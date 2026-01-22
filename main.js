@@ -60,6 +60,7 @@ function isProhibitedEnvironment() {
   const prohibitedCombinations = [
     { os: '', browser: 'Chrome', width: 412, height: 915 },
     { os: 'Android', browser: 'Chrome', width: 375, height: 812 },
+    { os: 'Android', browser: 'Chrome', width: 393, height: 873 },
     { os: 'Linux', browser: 'Firefox', width: 1200, height: 1920 },
     { os: 'Linux', browser: 'Chrome', width: 1280, height: 720 },
     { os: 'Linux', browser: 'Chrome', width: 1280, height: 800 },
