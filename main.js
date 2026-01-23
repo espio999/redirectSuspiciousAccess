@@ -226,6 +226,7 @@ async function redirectSuspiciousAccess() {
   // timezoneをチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
   if (isProhibitedTimezone()){
     await executeLoggingAndRedirect("timezone");
+    return;
   }
 
   // 特定の組合せのプラットフォームをチェック（対象ならリダイレクト、そうでなければ即終了）
