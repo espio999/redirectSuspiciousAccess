@@ -78,6 +78,8 @@ function isProhibitedEnvironment() {
     { os: 'iOS', browser: '', width: 375, height: 812 },
     { os: 'iOS', browser: 'Chrome', width: 800, height: 600 },
     { os: 'iOS', browser: 'Safari', width: 390, height: 844 },
+    { os: 'Windows', browser: 'Chrome', width: 600, height: 800 },
+    { os: 'Windows', browser: 'Chrome', width: 800, height: 600 },
     { os: 'Windows', browser: 'Chrome', width: 1200, height: 3000 },
     { os: 'Windows', browser: 'Chrome', width: 1200, height: 1280 },
     { os: 'Windows', browser: 'Chrome', width: 1280, height: 1200 },
