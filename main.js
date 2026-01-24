@@ -36,13 +36,15 @@ function isFirefox(){
 
 
 function getBrowserFamily(){
-  const categories = ["Chrome", "Firefox", "Safari"];
+  const categories = ["Chrome", "Edge", "Firefox", "Opera", "Safari"];
 
   const reg_chrome = /Chrome/i;
+  const reg_edge = /Edge/i;
   const reg_firefox = /Firefox/i;
+  const reg_opera = /Opera/i;
   const reg_safari = /Safari/i;
 
-  const categoryIndex = [reg_chrome, reg_firefox, reg_safari].findIndex(reg => reg.test(USER_BROWSER));
+  const categoryIndex = [reg_chrome, reg_edge, reg_firefox, reg_opera, reg_safari].findIndex(reg => reg.test(USER_BROWSER));
   
   return categories[categoryIndex] ?? null;
 }
@@ -61,6 +63,8 @@ function isProhibitedEnvironment() {
     { os: '', browser: 'Chrome', width: 412, height: 915 },
     { os: 'Android', browser: 'Chrome', width: 375, height: 812 },
     { os: 'Android', browser: 'Chrome', width: 393, height: 873 },
+    { os: 'Android', browser: 'Chrome', width: 1080, height: 1920 },
+    { os: 'Android', browser: 'Chrome', width: 1920, height: 1080 },
     { os: 'Android', browser: 'Firefox', width: 432, height: 964 },
     { os: 'Android', browser: 'Firefox', width: 964, height: 432 },
     { os: 'Linux', browser: 'Firefox', width: 1200, height: 1920 },
