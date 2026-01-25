@@ -56,12 +56,17 @@ async function logToDiscord(mode, comment) {
     };
 
     try {
-        await fetch(webhookUrl, {
+        //await fetch(webhookUrl, {
+        const response = await fetch(webhookUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
-            keepalive: true
+            keepalive: true,
+            //mode: 'no-cors'
         });
+
+        if (response) console.log('Fetch completion confirmed');
+
     } catch (error) {
         console.error('Failed to post to Discord:', error);
     }
