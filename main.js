@@ -203,7 +203,7 @@ function isFriendlyBot(){
   ];
 
   const reg_bot = new RegExp(bot_list.join('|'), 'i');
-  return reg_bot.test(window.document.userAgent);
+  return reg_bot.test(navigator.userAgent);
 }
 
 
