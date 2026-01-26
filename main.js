@@ -55,6 +55,11 @@ async function executeLoggingAndRedirect(reason) {
   await executeRedirect(reason);
 }
 
+function isApprovedCountry(){
+  // 国が許可されているか（許可なら true）
+  const APPROVED_COUNTRIES = ["Japan"];
+  return APPROVED_COUNTRIES.includes(USER_COUNTRY);
+}
 
 function isProhibitedEnvironment() {
   // OS、ブラウザ、スクリーン解像度の組合せを保持しておく
@@ -113,14 +118,8 @@ function isProhibitedEnvironment() {
       config.height === SCREEN_HEIGHT;
   });
 
-  // 国が許可されているか（許可なら true）
-  const isApprovedCountry = (() => {
-    const APPROVED_COUNTRIES = ["Japan"];
-    return APPROVED_COUNTRIES.includes(USER_COUNTRY);
-  })();
-
   // 「特定の環境」かつ「許可されていない国」であれば true（禁止）を返す
-  return isMatchedEnvironment && !isApprovedCountry;
+  return isMatchedEnvironment && !isApprovedCountry();
 }
 
 
@@ -137,9 +136,10 @@ function isInappropriateResolution(){
     "0,0",
     //"375,812","812,375",
     "517,826","826,517",
-    //"800,600"
-    //"1280,720",
-    //"1280,800",
+    //"600,800","800,600",
+    "600,1080","1080,600",
+    //"720,1280","1280,720",
+    //"800,1280","1280,800",
     "1200,3000",
     "1200,1280",
     "1280,1200",
@@ -150,7 +150,10 @@ function isInappropriateResolution(){
   const my_pair = [SCREEN_WIDTH, SCREEN_HEIGHT];
 
   //検閲対象の解像度ならば、trueを返す。
-  return target_resolution.has(my_pair.join(','));
+  const is_matched_resolution = target_resolution.has(my_pair.join(','));
+
+  //検閲対象解像度、かつ「許可されていない国」であれば true（禁止）を返す
+  return is_matched_resolution && !isApprovedCountry();
 }
 
 
