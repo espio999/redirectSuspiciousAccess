@@ -61,7 +61,7 @@ async function logToDiscord(mode, comment) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
-            keepalive: true,
+            //keepalive: true,
             //mode: 'no-cors'
         });
 
