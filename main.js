@@ -23,7 +23,7 @@ function isLinux(){
 }
 
 
-function isChrome(){
+/*function isChrome(){
   const my_reg = /Chrome/i;
   return !!(USER_BROWSER && my_reg.test(USER_BROWSER));
 }
@@ -32,7 +32,7 @@ function isChrome(){
 function isFirefox(){
   const my_reg = /Firefox/i;
   return !!(USER_BROWSER && my_reg.test(USER_BROWSER));
-}
+}*/
 
 
 function getBrowserFamily(){
@@ -61,7 +61,7 @@ function isApprovedCountry(){
   return APPROVED_COUNTRIES.includes(USER_COUNTRY);
 }
 
-function isProhibitedEnvironment() {
+/*function isProhibitedEnvironment() {
   // OS、ブラウザ、スクリーン解像度の組合せを保持しておく
   // 検閲対象リスト
   const prohibitedCombinations = [
@@ -104,11 +104,11 @@ function isProhibitedEnvironment() {
   let currentBrowser = USER_BROWSER;
   let ret_getBrowserFamily = getBrowserFamily();
   currentBrowser = ret_getBrowserFamily ?? currentBrowser;
-  /*
+  /!*
   //Chrome, Firefoxの特定
   currentBrowser = (isChrome()) ? "Chrome" : currentBrowser;
   currentBrowser = (isFirefox()) ? "Firefox" : currentBrowser;
-  */
+  *!/
 
   // 判定した値の組合せが、あらかじめ保持していた組合せに含まれるかを確認する
   // Array.prototype.some() は、条件に一致する要素が一つでもあれば true を返す
@@ -121,8 +121,59 @@ function isProhibitedEnvironment() {
 
   // 「特定の環境」かつ「許可されていない国」であれば true（禁止）を返す
   return isMatchedEnvironment && !isApprovedCountry();
-}
+}*/
 
+function isProhibitedEnvironment() {
+  // OS、ブラウザ、スクリーン解像度の組合せを保持しておく
+  // 検閲対象リスト
+  // フォーマット: "OS|Browser|Width|Height"
+  const prohibited_combination = new Set([
+    "|Chrome|412|915",
+    "Android|Chrome|375|812",
+    "Android|Chrome|393|873",
+    "Android|Chrome|1080|1920",
+    "Android|Chrome|1920|1080",
+    "Android|Firefox|432|964",
+    "Android|Firefox|964|432",
+    "Linux|Firefox|1200|1920",
+    "Linux|Chrome|1280|720",
+    "Linux|Chrome|1280|800",
+    "Linux|Firefox|1671|1114",
+    "Mac OS|Chrome|800|600",
+    "Mac OS|Chrome|1920|1080",
+    "OS X|Chrome|800|600",
+    "OS X|Chrome|1920|1080",
+    "iOS||375|812",
+    "iOS|Chrome|800|600",
+    "iOS|Safari|375|812",
+    "iOS|Safari|390|844",
+    "Windows|Chrome|600|800",
+    "Windows|Chrome|800|600",
+    "Windows|Chrome|993|1905",
+    "Windows|Chrome|1905|993",
+    "Windows|Chrome|1200|3000",
+    "Windows|Chrome|1200|1280",
+    "Windows|Chrome|1280|1200",
+    "Windows|Chrome|1366|768",
+    "Windows|Firefox|1600|900"
+  ]);
+
+  //Linuxの特定
+  //Apple製品の特定
+  let current_os = USER_OS;
+  current_os = (isLinux()) ? "Linux" : current_os;
+  current_os = (isApple()) ?? current_os;
+
+  //ブラウザの特定
+  let current_browser = USER_BROWSER;
+  current_browser = getBrowserFamily() ?? current_browser;
+
+  const matching_key = `${current_os}|${current_browser}|${SCREEN_WIDTH}|${SCREEN_HEIGHT}`;
+  const isMatchedEnvironment = prohibited_combination.has(matching_key);
+
+  // 「特定の環境」かつ「許可されていない国」であれば true（禁止）を返す
+  return isMatchedEnvironment && !isApprovedCountry();
+}
 
 function isProhibitedTimezone(){
   const prohibited_countries = ["Angola", "China", "Hong Kong", "Singapore"];
