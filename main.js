@@ -155,6 +155,7 @@ function isProhibitedEnvironment() {
     "Windows|Chrome|1200|1280",
     "Windows|Chrome|1280|1200",
     "Windows|Chrome|1366|768",
+    "Windows|Chrome|1366|1366",
     "Windows|Firefox|1600|900"
   ]);
 
