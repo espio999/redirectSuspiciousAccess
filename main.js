@@ -114,7 +114,7 @@ function isProhibitedEnvironment() {
   // Array.prototype.some() は、条件に一致する要素が一つでもあれば true を返す
   const isMatchedEnvironment = prohibitedCombinations.some(config => {
     return config.os === currentOS &&
-      config.browser === USER_BROWSER &&
+      config.browser === currentBrowser &&
       config.width === SCREEN_WIDTH &&
       config.height === SCREEN_HEIGHT;
   });
@@ -145,7 +145,7 @@ function isInappropriateResolution(){
     "1200,3000",
     "1280,1200",
     "1366,1366",
-    "1600,1600",
+    "1600,1600"
   ]);
 
   const my_pair = [SCREEN_WIDTH, SCREEN_HEIGHT];
