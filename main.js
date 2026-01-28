@@ -255,7 +255,14 @@ function isFriendlyBot(){
   ];
 
   const reg_bot = new RegExp(bot_list.join('|'), 'i');
-  return reg_bot.test(navigator.userAgent);
+  return reg_bot.test(UA);
+}
+
+
+function is360(){
+  // 360 secure browser検出の正規表現
+  const my_reg = /360se|WOW64|QIHU/i;
+  return !!(UA && my_reg.test(UA));
 }
 
 
@@ -290,6 +297,12 @@ async function redirectSuspiciousAccess() {
     return;
   }
 
+  // 360 secure browserの検出　(検出ならリダイレクト、そうでなければ次の検閲へ）
+  if (is360()){
+    await executeLoggingAndRedirect("360");
+    return;
+  }
+
   // 特定の組合せのプラットフォームをチェック（対象ならリダイレクト、そうでなければ即終了）
   if (isProhibitedEnvironment()) {
     await executeLoggingAndRedirect("environment");
@@ -300,6 +313,7 @@ async function redirectSuspiciousAccess() {
   return;
 }
 
+const UA = navigator.userAgent;
 const USER_REFERRER = document.referrer;
 const USER_COUNTRY = getCountry();
 

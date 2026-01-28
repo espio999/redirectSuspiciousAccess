@@ -4,6 +4,7 @@ async function logToDiscord(mode, comment) {
     // user agentの取得
     const ua = navigator.userAgent;
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const languages = navigator.languages;
     const resolution = `${SCREEN_WIDTH}x${SCREEN_HEIGHT}`;
     const previous_url = `${USER_REFERRER}`;
     const current_url = `${window.location.href}`;
@@ -45,6 +46,7 @@ async function logToDiscord(mode, comment) {
                 { name: "OS", value: os, inline: true },
                 { name: "Browser", value: browser, inline: true },
                 { name: "Timezone", value: timezone, inline: true },
+                { name: "Languages", value: languages, inline: true },
                 { name: "Resolution", value: resolution, inline: true },
                 { name: "Previous URL", value: previous_url, inline: true },
                 { name: "Current URL", value: current_url, inline: true },
