@@ -46,7 +46,7 @@ async function logToDiscord(mode, comment) {
                 { name: "OS", value: os, inline: true },
                 { name: "Browser", value: browser, inline: true },
                 { name: "Timezone", value: timezone, inline: true },
-                { name: "Languages", value: languages, inline: true },
+                { name: "Languages", value: languages.toString(), inline: true },
                 { name: "Resolution", value: resolution, inline: true },
                 { name: "Previous URL", value: previous_url, inline: true },
                 { name: "Current URL", value: current_url, inline: true },
