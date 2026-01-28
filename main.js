@@ -65,4 +65,4 @@ const is_undefined = (typeof window === 'undefined' || typeof screen === 'undefi
 const SCREEN_WIDTH = (is_undefined) ? 0 : screen.width;
 const SCREEN_HEIGHT = (is_undefined) ? 0 : screen.height;
 
-await redirectSuspiciousAccess();
+redirectSuspiciousAccess();
