@@ -131,5 +131,6 @@ async function logToDiscord(mode, comment) {
 
     } catch (error) {
         console.error('Failed to post to Discord:', error);
+        executeRedirect("fetch");
     }
 }
