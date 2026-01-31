@@ -125,6 +125,7 @@ function isProhibitedEnvironment() {
     // フォーマット: "OS|Browser|Width|Height"
     const prohibited_combination = new Set([
         "|Chrome|412|915",
+        "Android|Chrome|360|780",
         "Android|Chrome|375|812",
         "Android|Chrome|393|873",
         "Android|Chrome|1080|1920",
@@ -185,6 +186,8 @@ function isInappropriateResolution(){
     //検閲対象解像度
     const target_resolution = new Set([
         "0,0",
+        "360,780","780,360",
+        "375,667","667,375",
         "375,812","812,375",
         "517,826","826,517",
         //"600,800","800,600",
