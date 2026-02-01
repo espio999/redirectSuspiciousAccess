@@ -1,0 +1,293 @@
+<!--
+<noscript>
+  <meta http-equiv="refresh" content="0;URL='https://impsbl.hatenablog.jp/entry/20251231#%E4%B8%8D%E5%AF%A9%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%81%AEredirect%E5%85%88Redirect-Destination-for-Suspicious-Access'" />
+</noscript>
+-->
+
+<noscript>
+  <meta http-equiv="refresh" content="0;URL='https://0.0.0.0'" />
+</noscript>
+
+<script>
+  var isLegacy = (function() {
+    try {
+      // 1. 最小限のES6構文チェック
+      new Function('() => {}');
+
+      // 2. 必須APIの存在チェック
+      if (typeof Promise === "undefined" || !Object.assign) {
+        return true;
+      }
+      
+      return false;
+    } catch (e) {
+      return true;
+    }
+  })();
+
+  if (isLegacy) {
+    var destination_url = "https://0.0.0.0"
+    window.location.replace(destination_url);
+  }
+</script>
+
+<script>
+  function is360_inline(){
+    const ua = navigator.userAgent;
+
+    // 360 secure browser検出の正規表現
+    const list_360 = [
+      '360se',
+      'WOW64',
+      'QIHU',
+    ];
+
+    const reg_360 = new RegExp(list_360.join('|'), 'i');
+    return !!(ua && reg_360.test(ua));
+  }
+
+
+  function isE2Etest_inline(){
+    //E2Eテストライブラリのオブジェクトを確認
+    //一つでもロードされているとtruthy→一つ目の!でfalse、二つ目の!でtrue
+    //一つもロードされていないとfalse →一つ目の!でtrue、二つ目の!でfalse
+    const isBot = !!(
+      window.__nightmare || 
+      navigator.webdriver || 
+      window.Cypress || 
+      window._phantom
+    );
+
+    //言語設定されていない状況を判定
+    const hasNoLanguage = !!(navigator.languages && navigator.languages.length === 0);
+
+    return (isBot || hasNoLanguage);
+  }
+
+
+  function isFriendlyBot_inline(){
+    const bot_list = [
+      'Googlebot',            // Google
+      'bingbot',              // Bing / Microsoft Ads
+      'Applebot',             // Apple (Siri/Spotlight)
+      'DuckDuckBot',          // DuckDuckGo
+      'Y!J-',                 // Yahoo! JAPAN (独自の巡回ボット)
+      //'Baiduspider',          // Baidu (中国最大手)
+      //'YandexBot',            // Yandex (ロシア最大手)
+      //'facebookexternalhit',  // Facebookのリンクプレビュー
+      'Slackbot',             // Slackのリンク展開
+      'Twitterbot',           // X (Twitter) のリンク展開
+      //'PerplexityBot'         // AI検索 (Perplexity)
+    ];
+
+    const reg_bot = new RegExp(bot_list.join('|'), 'i');
+    return reg_bot.test(navigator.userAgent);
+  }
+
+
+  function executeRedirect_inline(source){
+    const CONFIG = {
+      REDIRECT_BASE: "https://0.0.0.0",
+      WARNING_URL: "https://impsbl.hatenablog.jp/entry/20260129",
+      WARNING_HASH: "#Redirect-Destination-for-Suspicious-Access%E4%B8%8D%E5%AF%A9%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%81%AE%E8%BB%A2%E9%80%81%E5%85%88",
+      // 本来のページURLをパラメータとして付与
+      ORIGINAL_URL: `?from=${encodeURIComponent(window.location.href)}`
+    };
+
+    let destination_url;
+
+    switch (source) {
+      case "clicky":
+      case "cloudflare":
+      case "juicer":
+      case "statcounter":
+      case "umami":
+        destination_url = CONFIG.WARNING_URL + CONFIG.ORIGINAL_URL + CONFIG.WARNING_HASH;
+        break;
+      default:
+        destination_url = CONFIG.REDIRECT_BASE;
+    }
+
+    //console.log(destination_url);
+    window.location.replace(destination_url);
+  }
+
+
+  async function executeLoggingAndRedirect_inline(reason) {
+    await logToDiscord_inline("redirect", reason);
+    executeRedirect_inline(reason);
+  }
+
+
+  async function logToDiscord_inline(mode, comment) {
+    const webhookUrl = 'https://discord.com/api/webhooks/1459720856203825315/jcn_enLc0xQKrTtKvSJev_T3m_cAnlBVlEgqZxESPBBp1V0pcPL5LGypcSJ8uZ47Q7d2';
+
+    // user agentの取得
+    const ua = navigator.userAgent;
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const languages = navigator.languages;
+    const resolution = `${window.screen.width}x${window.screen.height}`;
+    const previous_url = `${document.referrer}`;
+    const current_url = `${window.location.href}`;
+
+    // 簡単なOS・ブラウザ判別ロジック
+    let os = "Unknown OS";
+    if (ua.indexOf("Win") != -1) os = "Windows";
+    if (ua.indexOf("Mac") != -1) os = "Mac OS";
+    if (ua.indexOf("Linux") != -1) os = "Linux";
+    if (ua.indexOf("Android") != -1) os = "Android";
+    if (ua.indexOf("like Mac") != -1) os = "iOS";
+
+    let browser = "Unknown Browser";
+    if (ua.indexOf("Chrome") != -1) browser = "Chrome";
+    else if (ua.indexOf("Firefox") != -1) browser = "Firefox";
+    else if (ua.indexOf("Safari") != -1) browser = "Safari";
+    else if (ua.indexOf("Edge") != -1) browser = "Edge";
+
+    // Discordに送信するデータ構造
+    let log_title = "🫥 Default";
+    let log_color = 16777215; //白色
+
+    switch (mode) {
+      case "record":
+        //log_title = "👻 NoReferrer Access";
+        //log_color = 10181046; // 紫色
+        log_title = "🚫️ Blocking Analytics";
+        log_color = 8890731; // 緑色
+        break;
+      case "redirect":
+        log_title = "🚀 Redirect Log";
+        log_color = 15158332; // 赤色
+        break;
+    }
+
+    const payload = {
+        embeds: [{
+            title: log_title,
+            color: log_color,
+            fields: [
+                { name: "OS", value: os, inline: true },
+                { name: "Browser", value: browser, inline: true },
+                { name: "Resolution", value: resolution, inline: true },
+                { name: "Timezone", value: timezone, inline: true },
+                { name: "Languages", value: languages.toString(), inline: true },
+                { name: "Previous URL", value: previous_url, inline: true },
+                { name: "Current URL", value: current_url, inline: true },
+                { name: "Comment", value: comment || "なし", inline: false },
+                { name: "UserAgent", value: `\`\`\`${ua}\`\`\``, inline: false }
+            ],
+            timestamp: new Date().toISOString()
+        }]
+    };
+
+    try {
+        const response = await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            //keepalive: true,
+            //mode: 'no-cors'
+        });
+
+        if (response) console.log('Fetch completion confirmed');
+        
+    } catch (error) {
+        console.error('Failed to post to Discord:', error);
+    }
+  }
+
+  (function() {
+    let isRedirecting = false;
+
+    const redirectSuspiciousAccess_inline = async (source) => {
+      if (isRedirecting) return;
+      isRedirecting = true;
+
+      //　no referrerでなければOK
+      // 友好的なボットならばOK
+      if (document.referrer || (isFriendlyBot_inline() && !isE2Etest_inline())) {
+        //logToDiscord_inline("record", `onError: ${source}`);
+        return false;
+      }
+
+      // 360 secure browserは参照不可
+      if(is360_inline()){
+        await executeLoggingAndRedirect_inline("360");
+        return true;
+      }
+
+      // no referrerである
+      // 友好的ボットではない
+      // 360 secure browserではない
+      // 必要なスクリプトをブロックしている
+      // アクセス集計サービスをブロックしている
+      await executeLoggingAndRedirect_inline(source);
+      return true;
+    };
+
+    // 外部スクリプトから呼び出せるようにwindowに紐付ける
+    window.handleScriptError = async function(source) {
+      await redirectSuspiciousAccess_inline(source);
+    };
+  })();
+</script>
+
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net/" />
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.3/country.js" defer onerror="handleScriptError('country.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.3/platform.js" defer onerror="handleScriptError('platform.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.3/logging.js" defer onerror="handleScriptError('logging.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.3/redirect.js" defer onerror="handleScriptError('redirect.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.3/suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.3/main.js" defer onerror="handleScriptError('main.js')"></script>
+
+<!-- Clarity tracking code for https://impsbl.hatenablog.jp/ -->
+<script>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "59pvwqvhey");
+</script>
+
+<!-- Default Statcounter code for Technically Impossible
+https://impsbl.hatenablog.jp/ -->
+<script type="text/javascript">
+var sc_project=13010108; 
+var sc_invisible=1; 
+var sc_security="a666689f"; 
+</script>
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js" async onerror="handleScriptError('statcounter')"></script>
+<noscript><div class="statcounter"><a title="Web Analytics"
+href="https://statcounter.com/" target="_blank"><img class="statcounter"
+src="https://c.statcounter.com/13010108/0/a666689f/1/" alt="Web Analytics"
+referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+<!-- End of Statcounter Code -->
+
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "22648483c0f34f21bf4ba5292447704b"}' onerror="handleScriptError('cloudflare')"></script>
+<!-- End Cloudflare Web Analytics -->
+
+<!-- clicky -->
+<script async data-id="101500195" src="//static.getclicky.com/js" onerror="handleScriptError('clicky')"></script>
+
+<!-- umami -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="e1f53978-b437-4804-aa5a-bf515c5e190a" onerror="handleScriptError('umami')"></script>
+
+<!-- juicer -->
+<script src="//kitchen.juicer.cc/?color=cevlk5DYGbE=" async onerror="handleScriptError('juicer')"></script>
+<meta name="pocket-site-verification" content="0298daba47760e2b25d7f69a6c6459" />
+
+<!----- MathML ----->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- Twitter universal website tag code -->
+<script>
+!function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+},s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+// Insert Twitter Pixel ID and Standard Event data below
+twq('init','o57ty');
+twq('track','PageView');
+</script>
+<!-- End Twitter universal website tag code -->
