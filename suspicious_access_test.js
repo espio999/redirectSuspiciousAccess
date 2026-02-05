@@ -158,6 +158,7 @@ function isProhibitedEnvironment() {
         "Windows|Chrome|1366|1366",
         "Windows|Chrome|3840|2160",
         "Windows|Firefox|1600|900",
+        "Windows|Opera|1200|3000",
     ]);
 
     //Linuxの特定
