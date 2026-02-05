@@ -138,8 +138,10 @@ function isProhibitedEnvironment() {
         "Linux|Firefox|1671|1114",
         "Mac OS|Chrome|800|600",
         "Mac OS|Chrome|1280|720",
+        "Mac OS|Chrome|1366|1366",
         "Mac OS|Chrome|1920|1080",
         "OS X|Chrome|800|600",
+        "OS X|Chrome|1366|1366",
         "OS X|Chrome|1920|1080",
         "iOS||375|812",
         "iOS|Chrome|800|600",
@@ -154,7 +156,8 @@ function isProhibitedEnvironment() {
         "Windows|Chrome|1280|1200",
         "Windows|Chrome|1366|768",
         "Windows|Chrome|1366|1366",
-        "Windows|Firefox|1600|900"
+        "Windows|Chrome|3840|2160",
+        "Windows|Firefox|1600|900",
     ]);
 
     //Linuxの特定
