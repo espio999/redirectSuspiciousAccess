@@ -56,6 +56,21 @@ function isApprovedCountry(){
 }
 
 
+function includesJapanese(){
+    const APPROVED_LANGUAGES = ['ja'];
+    const USER_LANGUAGES = navigator.languages || [navigator.language];
+    
+    // ユーザーの言語リストを、比較しやすいように最初の2文字（言語グループ）に正規化
+    const hasApprovedLanguage = USER_LANGUAGES.some(userLang => {
+        // ハイフンで分割して最初の要素だけを取り出す（例: 'en-US' -> 'en'）
+        const langGroup = userLang.split('-')[0];
+        return APPROVED_LANGUAGES.includes(langGroup);
+    });
+
+    return hasApprovedLanguage
+}
+
+
 /*function isProhibitedEnvironment() {
   // OS、ブラウザ、スクリーン解像度の組合せを保持しておく
   // 検閲対象リスト
@@ -174,8 +189,18 @@ function isProhibitedEnvironment() {
     const matching_key = `${current_os}|${current_browser}|${SCREEN_WIDTH}|${SCREEN_HEIGHT}`;
     const isMatchedEnvironment = prohibited_combination.has(matching_key);
 
+    // 検閲対象環境と一致しないなら即終了
+    if (!isMatchedEnvironment) return false;
+
+    // 検閲対象であり、日本国外からのアクセス→禁止
+    // 建設対象であり、日本国内からのアクセスだが、日本語設定がない→禁止
+    // 検閲対象であり、日本国内からのアクセスで、日本語設定あり→許可
+    // 全てを総合すると「日本国内、かつ、日本語を含む」であれば許可（false）、それ以外は禁止（true）
+    const isProhibited = !(isApprovedCountry() && includesJapanese());
+    return isProhibited;
+
     // 「特定の環境」かつ「許可されていない国」であれば true（禁止）を返す
-    return isMatchedEnvironment && !isApprovedCountry();
+    // return isMatchedEnvironment && !isApprovedCountry();
 }
 
 
@@ -210,8 +235,18 @@ function isInappropriateResolution(){
     //検閲対象の解像度ならば、trueを返す。
     const is_matched_resolution = target_resolution.has(my_pair.join(','));
 
+    // 検閲対象環境と一致しないなら即終了
+    if (!is_matched_resolution) return false;
+
+    // 検閲対象であり、日本国外からのアクセス→禁止
+    // 建設対象であり、日本国内からのアクセスだが、日本語設定がない→禁止
+    // 検閲対象であり、日本国内からのアクセスで、日本語設定あり→許可
+    // 全てを総合すると「日本国内、かつ、日本語を含む」であれば許可（false）、それ以外は禁止（true）
+    const isProhibited = !(isApprovedCountry() && includesJapanese());
+    return isProhibited;
+
     //検閲対象解像度、かつ「許可されていない国」であれば true（禁止）を返す
-    return is_matched_resolution && !isApprovedCountry();
+    //return is_matched_resolution && !isApprovedCountry();
 }
 
 
