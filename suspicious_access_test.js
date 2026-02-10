@@ -155,9 +155,11 @@ function isProhibitedEnvironment() {
         "Linux|Firefox|1671|1114",
         "Mac OS|Chrome|800|600",
         "Mac OS|Chrome|1280|720",
+        "Mac OS|Chrome|1232|1524",
         "Mac OS|Chrome|1366|1366",
         "Mac OS|Chrome|1920|1080",
         "OS X|Chrome|800|600",
+        "OS X|Chrome|1232|1524",
         "OS X|Chrome|1366|1366",
         "OS X|Chrome|1920|1080",
         "iOS||375|812",
@@ -173,6 +175,7 @@ function isProhibitedEnvironment() {
         "Windows|Chrome|1366|768",
         "Windows|Chrome|1366|1366",
         "Windows|Chrome|3840|2160",
+        "Windows|Edge|1200|3000",
         "Windows|Firefox|1600|900",
         "Windows|Opera|1200|3000",
     ]);
@@ -224,9 +227,9 @@ function isInappropriateResolution(){
         "600,1080","1080,600",
         //"720,1280","1280,720",
         //"800,1280","1280,800",
-        "1200,1280",
+        "1200,1280","1280,1200",
         "1200,3000",
-        "1280,1200",
+        "1232,1524","1524,1232",
         "1366,1366",
         "1600,1600"
     ]);
