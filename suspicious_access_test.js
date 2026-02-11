@@ -77,9 +77,13 @@ function isProhibitedEnvironment() {
     // フォーマット: "OS|Browser|Width|Height"
     const prohibited_combination = new Set([
         "|Chrome|412|915",
+        "|Chrome|480|800",
+        "|Chrome|1600|1000",
         "Android|Chrome|360|780",
         "Android|Chrome|375|812",
         "Android|Chrome|393|873",
+        "Android|Chrome|397|720", "Android|Chrome|720|397",
+        "Android|Chrome|400|726", "Android|Chrome|726|400",
         "Android|Chrome|1080|1920",
         "Android|Chrome|1920|1080",
         "Android|Firefox|432|964",
@@ -159,6 +163,7 @@ function isInappropriateResolution(){
         "360,780","780,360",
         "375,667","667,375",
         "375,812","812,375",
+        "480,800","800,480",
         "517,826","826,517",
         //"600,800","800,600",
         "600,1080","1080,600",
@@ -169,6 +174,7 @@ function isInappropriateResolution(){
         "1200,3000",
         "1232,1524","1524,1232",
         "1366,1366",
+        "1600,1000",
         "1600,1600"
     ]);
 
