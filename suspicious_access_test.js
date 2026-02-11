@@ -71,69 +71,6 @@ function includesJapanese(){
 }
 
 
-/*function isProhibitedEnvironment() {
-  // OS、ブラウザ、スクリーン解像度の組合せを保持しておく
-  // 検閲対象リスト
-  const prohibitedCombinations = [
-    { os: '', browser: 'Chrome', width: 412, height: 915 },
-    { os: 'Android', browser: 'Chrome', width: 375, height: 812 },
-    { os: 'Android', browser: 'Chrome', width: 393, height: 873 },
-    { os: 'Android', browser: 'Chrome', width: 1080, height: 1920 }, { os: 'Android', browser: 'Chrome', width: 1920, height: 1080 },
-    { os: 'Android', browser: 'Firefox', width: 432, height: 964 },
-    { os: 'Android', browser: 'Firefox', width: 964, height: 432 },
-    { os: 'Linux', browser: 'Firefox', width: 1200, height: 1920 },
-    { os: 'Linux', browser: 'Chrome', width: 1280, height: 720 },
-    { os: 'Linux', browser: 'Chrome', width: 1280, height: 800 },
-    { os: 'Linux', browser: 'Firefox', width: 1671, height: 1114 },
-    { os: 'Mac OS', browser: 'Chrome', width: 800, height: 600 },
-    { os: 'Mac OS', browser: 'Chrome', width: 1920, height: 1080 },
-    { os: 'OS X', browser: 'Chrome', width: 800, height: 600 },
-    { os: 'OS X', browser: 'Chrome', width: 1920, height: 1080 },
-    { os: 'iOS', browser: '', width: 375, height: 812 },
-    { os: 'iOS', browser: 'Chrome', width: 800, height: 600 },
-    { os: 'iOS', browser: 'Safari', width: 375, height: 812 },
-    { os: 'iOS', browser: 'Safari', width: 390, height: 844 },
-    { os: 'Windows', browser: 'Chrome', width: 600, height: 800 }, { os: 'Windows', browser: 'Chrome', width: 800, height: 600 },
-    { os: 'Windows', browser: 'Chrome', width: 993, height: 1905 }, { os: 'Windows', browser: 'Chrome', width: 1905, height: 993 },
-    { os: 'Windows', browser: 'Chrome', width: 1200, height: 3000 },
-    { os: 'Windows', browser: 'Chrome', width: 1200, height: 1280 },
-    { os: 'Windows', browser: 'Chrome', width: 1280, height: 1200 },
-    { os: 'Windows', browser: 'Chrome', width: 1366, height: 768 },
-    { os: 'Windows', browser: 'Firefox', width: 1600, height: 900 }
-  ];
-
-  // Linuxの特定
-  let currentOS = USER_OS;
-  currentOS = (isLinux()) ? "Linux" : currentOS;
-
-  //Apple製品の特定
-  let ret_isApple = isApple();
-  currentOS = ret_isApple ?? currentOS;
-
-  //ブラウザの特定
-  let currentBrowser = USER_BROWSER;
-  let ret_getBrowserFamily = getBrowserFamily();
-  currentBrowser = ret_getBrowserFamily ?? currentBrowser;
-  /!*
-  //Chrome, Firefoxの特定
-  currentBrowser = (isChrome()) ? "Chrome" : currentBrowser;
-  currentBrowser = (isFirefox()) ? "Firefox" : currentBrowser;
-  *!/
-
-  // 判定した値の組合せが、あらかじめ保持していた組合せに含まれるかを確認する
-  // Array.prototype.some() は、条件に一致する要素が一つでもあれば true を返す
-  const isMatchedEnvironment = prohibitedCombinations.some(config => {
-    return config.os === currentOS &&
-      config.browser === currentBrowser &&
-      config.width === SCREEN_WIDTH &&
-      config.height === SCREEN_HEIGHT;
-  });
-
-  // 「特定の環境」かつ「許可されていない国」であれば true（禁止）を返す
-  return isMatchedEnvironment && !isApprovedCountry();
-}*/
-
-
 function isProhibitedEnvironment() {
     // OS、ブラウザ、スクリーン解像度の組合せを保持しておく
     // 検閲対象リスト
@@ -151,7 +88,7 @@ function isProhibitedEnvironment() {
         "Linux|Chrome|1200|3000",
         "Linux|Chrome|1280|720",
         "Linux|Chrome|1280|800",
-        "Linux|Firefox|1200|1920",
+        "Linux|Firefox|1200|1920", //"Linux|Firefox|1920|1200",
         "Linux|Firefox|1671|1114",
         "Mac OS|Chrome|800|600",
         "Mac OS|Chrome|1280|720",
@@ -228,6 +165,7 @@ function isInappropriateResolution(){
         //"720,1280","1280,720",
         //"800,1280","1280,800",
         "1200,1280","1280,1200",
+        //"1200,1920","1920,1200",
         "1200,3000",
         "1232,1524","1524,1232",
         "1366,1366",
