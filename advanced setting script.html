@@ -8,6 +8,9 @@
   <meta http-equiv="refresh" content="0;URL='https://0.0.0.0'" />
 </noscript>
 
+<!--
+  SE6対応の確認コードなので、SR6以前の記述スタイルでなければならない。
+-->
 <script>
   var isLegacy = (function() {
     try {
@@ -26,6 +29,92 @@
   })();
 
   if (isLegacy) {
+    var destination_url = "https://0.0.0.0"
+    window.location.replace(destination_url);
+  }
+</script>
+
+<script>
+  function isSuspiciousQuery(){
+    const suspicious_keys = new Set([
+      'ad_format_ids',
+      'sua',
+      'gclid',
+      'fbclid',   // Facebookの追跡ID（不要な場合）
+      'msclkid',  // Microsoft広告の追跡ID
+    ]);
+
+    const query_params = new URLSearchParams(window.location.search);
+
+    let isSuspicious = false;
+    for (const key of query_params.keys()) {
+      if (suspicious_keys.has(key)) {
+          isSuspicious = true;
+          break;
+      }
+    }
+
+    return isSuspicious;
+  }
+
+  function isShanghai(){
+    const suspicious_timezone = new Set([
+      'Asia/Shanghai',
+      'Etc/Unknown',
+    ]);
+
+    try{
+      const timezone_user = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      return suspicious_timezone.has(timezone_user);
+    }
+    catch(e){
+      //timezone取得不可の場合
+      return true;
+    }
+  }
+  
+  function isSuspiciousResolution(){
+    const suspicious_resolution = new Set([
+        "0,0",
+        //"360,780","780,360",
+        //"375,667","667,375",
+        //"375,812","812,375",
+        "480,800","800,480",
+        "517,826","826,517",
+        "600,800","800,600",
+        "600,1080","1080,600",
+        "1200,1280","1280,1200",
+        "1200,1920",
+        "1200,3000",
+        "1232,1524","1524,1232",
+        "1366,1366",
+        "1600,1000",
+        "1600,1600"
+    ]);
+
+    const is_undefined = (typeof window === 'undefined' || typeof screen === 'undefined') ? true : false;
+    const SCREEN_WIDTH = (is_undefined) ? 0 : screen.width;
+    const SCREEN_HEIGHT = (is_undefined) ? 0 : screen.height;
+    const my_pair = [SCREEN_WIDTH, SCREEN_HEIGHT];
+    const isSuspicious = suspicious_resolution.has(my_pair.join(','));
+    return isSuspicious;
+  }
+
+  function is360browser(){
+    const ua = navigator.userAgent;
+
+    // 360 secure browser検出の正規表現
+    const list_360 = [
+      '360se',
+      'WOW64',
+      'QIHU',
+    ];
+
+    const reg_360 = new RegExp(list_360.join('|'), 'i');
+    return !!(ua && reg_360.test(ua));
+  }
+
+  if (isShanghai() || isSuspiciousResolution() || isSuspiciousQuery() || is360browser()) {
     var destination_url = "https://0.0.0.0"
     window.location.replace(destination_url);
   }
@@ -212,10 +301,12 @@
       }
 
       // 360 secure browserは参照不可
+      /*
       if(is360_inline()){
         await executeLoggingAndRedirect_inline("360");
         return true;
       }
+      */
 
       // no referrerである
       // 友好的ボットではない
@@ -234,12 +325,12 @@
 </script>
 
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/" />
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.11/country.js" defer onerror="handleScriptError('country.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.11/platform.js" defer onerror="handleScriptError('platform.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.11/logging.js" defer onerror="handleScriptError('logging.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.11/redirect.js" defer onerror="handleScriptError('redirect.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.11/suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.11/main.js" defer onerror="handleScriptError('main.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.12/country.js" defer onerror="handleScriptError('country.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.12/platform.js" defer onerror="handleScriptError('platform.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.12/logging.js" defer onerror="handleScriptError('logging.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.12/redirect.js" defer onerror="handleScriptError('redirect.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.12/suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.12/main.js" defer onerror="handleScriptError('main.js')"></script>
 
 <!-- Clarity tracking code for https://impsbl.hatenablog.jp/ -->
 <script>
