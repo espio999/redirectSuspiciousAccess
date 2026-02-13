@@ -85,12 +85,15 @@
         "600,1080","1080,600",
         "1024,1280","1280,1024",
         "1200,1280","1280,1200",
-        "1200,1920",
+        "1200,1920","1920,1200",
         "1200,3000",
         "1232,1524","1524,1232",
         "1366,1366",
         "1600,1000",
-        "1600,1600"
+        "1600,1600",
+        "1873,1103",
+        "1895,1039",
+        "1938,1068",        
     ]);
 
     const is_undefined = (typeof window === 'undefined' || typeof screen === 'undefined') ? true : false;
@@ -115,7 +118,15 @@
     return !!(ua && reg_360.test(ua));
   }
 
-  if (isShanghai() || isSuspiciousResolution() || isSuspiciousQuery() || is360browser()) {
+  function isHeadless(){
+    const ua = navigator.userAgent;
+    const reg = /HeadlessChrome/i;
+
+    isSuspicious = (navigator.webdriver === true) || reg.test(ua);
+    return isSuspicious;
+  }
+  
+  if (isShanghai() || isSuspiciousResolution() || isSuspiciousQuery() || is360browser() || isHeadless()) {
     var destination_url = "https://0.0.0.0"
     window.location.replace(destination_url);
   }
