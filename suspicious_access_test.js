@@ -93,6 +93,7 @@ function isProhibitedEnvironment() {
         "Linux|Chrome|1280|720",
         "Linux|Chrome|1280|800",
         "Linux|Chrome|1200|1920", //"Linux|Chrome|1920|1200",
+        "Linux|Firefox|1024|1280", "Linux|Firefox|1280|1024",
         "Linux|Firefox|1200|1920", //"Linux|Firefox|1920|1200",
         "Linux|Firefox|1671|1114",
         "Mac OS|Chrome|800|600",
@@ -119,6 +120,7 @@ function isProhibitedEnvironment() {
         "Windows|Chrome|3840|2160",
         "Windows|Edge|1200|3000",
         "Windows|Firefox|1600|900",
+        "Windows|Opera|1920|1080",
         "Windows|Opera|1200|3000",
     ]);
 
@@ -170,6 +172,7 @@ function isInappropriateResolution(){
         "600,1080","1080,600",
         //"720,1280","1280,720",
         //"800,1280","1280,800",
+        "1024,1280","1280,1024",
         "1200,1280","1280,1200",
         "1200,1920",//"1920,1200",
         "1200,3000",
