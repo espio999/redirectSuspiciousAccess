@@ -57,9 +57,11 @@
     return isSuspicious;
   }
 
-  function isShanghai(){
+  function isSuspiciousTimezone(){
     const suspicious_timezone = new Set([
+      'Asia/Hong_Kong',
       'Asia/Shanghai',
+      'Europe/Moscow',
       'Etc/Unknown',
     ]);
 
@@ -88,6 +90,7 @@
         "1200,1920","1920,1200",
         "1200,3000",
         "1232,1524","1524,1232",
+        "1262,1440","1440,1262",
         "1366,1366",
         "1600,1000",
         "1600,1600",
@@ -126,7 +129,7 @@
     return isSuspicious;
   }
   
-  if (isShanghai() || isSuspiciousResolution() || isSuspiciousQuery() || is360browser() || isHeadless()) {
+  if (isSuspiciousTimezone() || isSuspiciousResolution() || isSuspiciousQuery() || is360browser() || isHeadless()) {
     var destination_url = "https://0.0.0.0"
     window.location.replace(destination_url);
   }
