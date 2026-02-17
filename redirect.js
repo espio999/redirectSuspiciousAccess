@@ -9,7 +9,7 @@ function executeRedirect(){
 
     let destination_url = CONFIG.REDIRECT_BASE;
 
-    switch (FLAG_MAP.reason) {
+    switch (window.FLAG_MAP.reason) {
         case "fetch":
             destination_url = CONFIG.WARNING_URL + CONFIG.ORIGINAL_URL + CONFIG.WARNING_HASH;
             break;

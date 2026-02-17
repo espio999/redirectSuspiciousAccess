@@ -10,36 +10,36 @@ async function redirectSuspiciousAccess() {
   // E2Eライブラリ有無を確認
   // 友好的ボットでE2Eライブラリ無しであれば、即終了
   //if (USER_REFERRER || (isFriendlyBot() && !isE2Etest())) {
-  if (!FLAG_MAP.isNoReferrer || FLAG_MAP.isFriendlyBot) {
+  if (!window.FLAG_MAP.isNoReferrer || window.FLAG_MAP.isFriendlyBot) {
     return false;
   }
   else{
     // リファラのないアクセスを記録
-    FLAG_MAP.reason = "no referrer";
-    FLAG_MAP.log_mode = "record";
+    window.FLAG_MAP.reason = "no referrer";
+    window.FLAG_MAP.log_mode = "record";
     await logToDiscord();
   }
 
   // デバイス名が不明かチェック（不明ならリダイレクト、そうでなければ次の検閲へ）
   if (isUnknownDevice()) {
-    FLAG_MAP.reason = "unknown device";
-    FLAG_MAP.log_mode = "redirect";
+    window.FLAG_MAP.reason = "unknown device";
+    window.FLAG_MAP.log_mode = "redirect";
     await executeLoggingAndRedirect();
     return true;
   }
 
   // 解像度をチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
   if (isInappropriateResolution()){
-    FLAG_MAP.reason = "resolution";
-    FLAG_MAP.log_mode = "redirect";
+    window.FLAG_MAP.reason = "resolution";
+    window.FLAG_MAP.log_mode = "redirect";
     await executeLoggingAndRedirect();
     return true;
   }
 
   // timezoneをチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
   if (isProhibitedTimezone()){
-    FLAG_MAP.reason = "timezone";
-    FLAG_MAP.log_mode = "redirect";
+    window.FLAG_MAP.reason = "timezone";
+    window.FLAG_MAP.log_mode = "redirect";
     await executeLoggingAndRedirect();
     return true;
   }
@@ -54,8 +54,8 @@ async function redirectSuspiciousAccess() {
 
   // 特定の組合せのプラットフォームをチェック（対象ならリダイレクト、そうでなければ即終了）
   if (isProhibitedEnvironment()) {
-    FLAG_MAP.reason = "environment";
-    FLAG_MAP.log_mode = "redirect";
+    window.FLAG_MAP.reason = "environment";
+    window.FLAG_MAP.log_mode = "redirect";
     await executeLoggingAndRedirect();
     return true;
   }
@@ -93,5 +93,6 @@ window.FLAG_MAP = window.FLAG_MAP || {
   log_mode: "",
 }
 
-FLAG_MAP.isMainExecuted = true;
-if (!FLAG_MAP.isInlineExecuted) redirectSuspiciousAccess();
+window.FLAG_MAP.isMainExecuted = true;
+console.log(`window.FLAG_MAP.isInlineExecuted, window.FLAG_MAP.isMainExecuted, window.FLAG_MAP.isRedirected = ${window.FLAG_MAP.isInlineExecuted}, ${window.FLAG_MAP.isMainExecuted}, ${window.FLAG_MAP.isRedirected}`)
+if (!window.FLAG_MAP.isInlineExecuted) redirectSuspiciousAccess();

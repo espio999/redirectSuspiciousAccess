@@ -10,7 +10,7 @@ async function logToDiscord() {
     let log_title = "🫥 Default";
     let log_color = 16777215; //白色
 
-    switch (FLAG_MAP.log_mode) {
+    switch (window.FLAG_MAP.log_mode) {
         case "record":
             log_title = "👻 NoReferrer Access";
             log_color = 10181046; // 紫色
@@ -33,7 +33,7 @@ async function logToDiscord() {
                 { name: "Languages", value: languages.toString(), inline: true },
                 { name: "Previous URL", value: previous_url, inline: true },
                 { name: "Current URL", value: current_url, inline: true },
-                { name: "Comment", value: FLAG_MAP.reason, inline: false },
+                { name: "Comment", value: window.FLAG_MAP.reason, inline: false },
                 { name: "UserAgent", value: `\`\`\`${UA}\`\`\``, inline: false }
             ],
             timestamp: new Date().toISOString()
@@ -54,7 +54,7 @@ async function logToDiscord() {
 
     } catch (error) {
         console.error('Failed to post to Discord:', error);
-        FLAG_MAP.REASON = "fetch";
+        window.FLAG_MAP.REASON = "fetch";
         executeRedirect();
     }
 }
