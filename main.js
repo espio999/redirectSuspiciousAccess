@@ -88,7 +88,7 @@ window.FLAG_MAP = window.FLAG_MAP || {
   isMainExecuted: false,
   isFriendlyBot: (isFriendlyBot() && !isE2Etest()),
   isNoReferrer: !USER_REFERRER,
-  isRedireted: isRedirected(),
+  isRedirected: isRedirected(),
   reason: "",
   log_mode: "",
 }
