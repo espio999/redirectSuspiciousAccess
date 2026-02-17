@@ -1,4 +1,4 @@
-function executeRedirect(source){
+function executeRedirect(){
     const CONFIG = {
       REDIRECT_BASE: "https://0.0.0.0",
       WARNING_URL: "https://impsbl.hatenablog.jp/entry/20260129",
@@ -9,7 +9,7 @@ function executeRedirect(source){
 
     let destination_url = CONFIG.REDIRECT_BASE;
 
-    switch (source) {
+    switch (FLAG_MAP.reason) {
         case "fetch":
             destination_url = CONFIG.WARNING_URL + CONFIG.ORIGINAL_URL + CONFIG.WARNING_HASH;
             break;

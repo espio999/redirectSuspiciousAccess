@@ -8,9 +8,7 @@
   <meta http-equiv="refresh" content="0;URL='https://0.0.0.0'" />
 </noscript>
 
-<!--
-  SE6対応の確認コードなので、SR6以前の記述スタイルでなければならない。
--->
+<!--　SE6対応の確認コードなので、SR6以前の記述スタイルでなければならない。　-->
 <script>
   var isLegacy = (function() {
     try {
@@ -34,6 +32,7 @@
   }
 </script>
 
+<!--　最初の検閲　-->
 <script>
   function isSuspiciousQuery(){
     const suspicious_keys = new Set([
@@ -130,29 +129,19 @@
     isSuspicious = (navigator.webdriver === true) || reg.test(ua);
     return isSuspicious;
   }
-  
-  if (isSuspiciousTimezone() || isSuspiciousResolution() || isSuspiciousQuery() || is360browser() || isHeadless()) {
+
+  function isServerside(){
+    return (typeof window === 'undefined' || typeof screen === 'undefined')
+  }
+
+  if (isSuspiciousTimezone() || isSuspiciousResolution() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside()) {
     var destination_url = "https://0.0.0.0"
     window.location.replace(destination_url);
   }
 </script>
 
+<!--　フラグ設定　-->
 <script>
-  function is360_inline(){
-    const ua = navigator.userAgent;
-
-    // 360 secure browser検出の正規表現
-    const list_360 = [
-      '360se',
-      'WOW64',
-      'QIHU',
-    ];
-
-    const reg_360 = new RegExp(list_360.join('|'), 'i');
-    return !!(ua && reg_360.test(ua));
-  }
-
-
   function isE2Etest_inline(){
     //E2Eテストライブラリのオブジェクトを確認
     //一つでもロードされているとtruthy→一つ目の!でfalse、二つ目の!でtrue
@@ -169,7 +158,6 @@
 
     return (isBot || hasNoLanguage);
   }
-
 
   function isFriendlyBot_inline(){
     const bot_list = [
@@ -190,19 +178,91 @@
     return reg_bot.test(navigator.userAgent);
   }
 
+  function isRedirected_inline(){
+    const url_param = new URLSearchParams(window.location.search);
+    return !!url_param.get('expected');
+  }
 
-  function executeRedirect_inline(source){
+  window.FLAG_MAP = window.FLAG_MAP || {
+    isInlineExecuted: false,
+    isMainExecuted: false,
+    isFriendlyBot: (isFriendlyBot_inline() && !isE2Etest_inline()),
+    isNoReferrer: !document.referrer,
+    isRedireted: isRedirected_inline(),
+    reason: "",
+    log_mode: "",
+  }
+</script>
+
+<script>
+  /*
+  function is360_inline(){
+    const ua = navigator.userAgent;
+
+    // 360 secure browser検出の正規表現
+    const list_360 = [
+      '360se',
+      'WOW64',
+      'QIHU',
+    ];
+
+    const reg_360 = new RegExp(list_360.join('|'), 'i');
+    return !!(ua && reg_360.test(ua));
+  }
+  */
+
+  /*
+  function isE2Etest_inline(){
+    //E2Eテストライブラリのオブジェクトを確認
+    //一つでもロードされているとtruthy→一つ目の!でfalse、二つ目の!でtrue
+    //一つもロードされていないとfalse →一つ目の!でtrue、二つ目の!でfalse
+    const isBot = !!(
+      window.__nightmare || 
+      navigator.webdriver || 
+      window.Cypress || 
+      window._phantom
+    );
+
+    //言語設定されていない状況を判定
+    const hasNoLanguage = !!(navigator.languages && navigator.languages.length === 0);
+
+    return (isBot || hasNoLanguage);
+  }
+  */
+
+  /*
+  function isFriendlyBot_inline(){
+    const bot_list = [
+      'Googlebot',            // Google
+      'bingbot',              // Bing / Microsoft Ads
+      'Applebot',             // Apple (Siri/Spotlight)
+      'DuckDuckBot',          // DuckDuckGo
+      'Y!J-',                 // Yahoo! JAPAN (独自の巡回ボット)
+      //'Baiduspider',          // Baidu (中国最大手)
+      //'YandexBot',            // Yandex (ロシア最大手)
+      //'facebookexternalhit',  // Facebookのリンクプレビュー
+      'Slackbot',             // Slackのリンク展開
+      'Twitterbot',           // X (Twitter) のリンク展開
+      //'PerplexityBot'         // AI検索 (Perplexity)
+    ];
+
+    const reg_bot = new RegExp(bot_list.join('|'), 'i');
+    return reg_bot.test(navigator.userAgent);
+  }
+  */
+
+  function executeRedirect_inline(){
     const CONFIG = {
       REDIRECT_BASE: "https://0.0.0.0",
       WARNING_URL: "https://impsbl.hatenablog.jp/entry/20260129",
       WARNING_HASH: "#Redirect-Destination-for-Suspicious-Access%E4%B8%8D%E5%AF%A9%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%81%AE%E8%BB%A2%E9%80%81%E5%85%88",
       // 本来のページURLをパラメータとして付与
-      ORIGINAL_URL: `?from=${encodeURIComponent(window.location.href)}`
+      ORIGINAL_URL: `?expected=${encodeURIComponent(window.location.href)}`
     };
 
     let destination_url;
 
-    switch (source) {
+    switch (FLAG_MAP.reason) {
       case "clarity":
       case "clicky":
       case "cloudflare":
@@ -220,13 +280,13 @@
   }
 
 
-  async function executeLoggingAndRedirect_inline(reason) {
-    await logToDiscord_inline("redirect", reason);
-    executeRedirect_inline(reason);
+  async function executeLoggingAndRedirect_inline() {
+    await logToDiscord_inline();
+    executeRedirect_inline();
   }
 
 
-  async function logToDiscord_inline(mode, comment) {
+  async function logToDiscord_inline() {
     const webhookUrl = 'https://discord.com/api/webhooks/1459720856203825315/jcn_enLc0xQKrTtKvSJev_T3m_cAnlBVlEgqZxESPBBp1V0pcPL5LGypcSJ8uZ47Q7d2';
 
     // user agentの取得
@@ -255,7 +315,7 @@
     let log_title = "🫥 Default";
     let log_color = 16777215; //白色
 
-    switch (mode) {
+    switch (FLAG_MAP.log_mode) {
       case "record":
         //log_title = "👻 NoReferrer Access";
         //log_color = 10181046; // 紫色
@@ -280,7 +340,7 @@
                 { name: "Languages", value: languages.toString(), inline: true },
                 { name: "Previous URL", value: previous_url, inline: true },
                 { name: "Current URL", value: current_url, inline: true },
-                { name: "Comment", value: comment || "なし", inline: false },
+                { name: "Comment", value: FLAG_MAP.reason || "なし", inline: false },
                 { name: "UserAgent", value: `\`\`\`${ua}\`\`\``, inline: false }
             ],
             timestamp: new Date().toISOString()
@@ -304,33 +364,32 @@
   }
 
   (function() {
-    let isRedirecting = false;
+    //let isRedirecting = false;
 
     const redirectSuspiciousAccess_inline = async (source) => {
+      /*
       if (isRedirecting) return;
       isRedirecting = true;
+      */
+     console.log(`FLAG_MAP.isInlineExecuted || FLAG_MAP.isRedirected = ${FLAG_MAP.isInlineExecuted} || ${FLAG_MAP.isRedirected}`);
+      if (FLAG_MAP.isInlineExecuted || FLAG_MAP.isRedirected) return false;
+      FLAG_MAP.isInlineExecuted = true;
+      FLAG_MAP.reason = source;
+      FLAG_MAP.log_mode = "redirect";
 
       //　no referrerでなければOK
       // 友好的なボットならばOK
-      if (document.referrer || (isFriendlyBot_inline() && !isE2Etest_inline())) {
-        //logToDiscord_inline("record", `onError: ${source}`);
+      //if (document.referrer || (isFriendlyBot_inline() && !isE2Etest_inline())) {
+      if (!FLAG_MAP.isNoReferrer || FLAG_MAP.isFriendlyBot) {
+        //logToDiscord_inline("record", `onError: ${FLAG_MAP.reason}`);
         return false;
       }
 
-      // 360 secure browserは参照不可
-      /*
-      if(is360_inline()){
-        await executeLoggingAndRedirect_inline("360");
-        return true;
-      }
-      */
-
       // no referrerである
       // 友好的ボットではない
-      // 360 secure browserではない
       // 必要なスクリプトをブロックしている
       // アクセス集計サービスをブロックしている
-      await executeLoggingAndRedirect_inline(source);
+      await executeLoggingAndRedirect_inline();
       return true;
     };
 
@@ -349,6 +408,10 @@
 <script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.14/suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
 <script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.1.14/main.js" defer onerror="handleScriptError('main.js')"></script>
 
+<!-- ローカル実行
+<script src="suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
+<script src="main.js" defer onerror="handleScriptError('main.js')"></script>
+-->
 <!-- Clarity tracking code for https://impsbl.hatenablog.jp/ -->
 <script>
     (function(c,l,a,r,i,t,y){
