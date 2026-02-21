@@ -50,10 +50,10 @@ async function logToDiscord() {
             //mode: 'no-cors'
         });
 
-        if (response) console.log('Fetch completion confirmed');
+        //if (response) console.log('Fetch completion confirmed');
 
     } catch (error) {
-        console.error('Failed to post to Discord:', error);
+        //console.error('Failed to post to Discord:', error);
         window.FLAG_MAP.REASON = "fetch";
         executeRedirect();
     }

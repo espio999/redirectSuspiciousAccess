@@ -22,18 +22,6 @@ function isLinux(){
 }
 
 
-/*function isChrome(){
-  const my_reg = /Chrome/i;
-  return !!(USER_BROWSER && my_reg.test(USER_BROWSER));
-}
-
-
-function isFirefox(){
-  const my_reg = /Firefox/i;
-  return !!(USER_BROWSER && my_reg.test(USER_BROWSER));
-}*/
-
-
 function getBrowserFamily(){
     const categories = ["Chrome", "Edge", "Firefox", "Opera", "Safari"];
 

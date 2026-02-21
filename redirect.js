@@ -20,10 +20,3 @@ function executeRedirect(){
     //console.log(destination_url);
     window.location.replace(destination_url);
 }
-
-/*
-function executeRedirect(source){
-    const destination_url ="https://0.0.0.0";
-    window.location.replace(destination_url);
-}
-*/

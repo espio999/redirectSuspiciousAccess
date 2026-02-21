@@ -4,7 +4,7 @@ async function executeLoggingAndRedirect() {
 }
 
 
-async function redirectSuspiciousAccess() {
+async function isSuspiciousAccess() {
   // リファラをチェック（あれば即終了、なければ検閲続行）
   // 友好的ボットを確認
   // E2Eライブラリ有無を確認
@@ -94,5 +94,17 @@ window.FLAG_MAP = window.FLAG_MAP || {
 }
 
 window.FLAG_MAP.isMainExecuted = true;
-console.log(`window.FLAG_MAP.isInlineExecuted, window.FLAG_MAP.isMainExecuted, window.FLAG_MAP.isRedirected = ${window.FLAG_MAP.isInlineExecuted}, ${window.FLAG_MAP.isMainExecuted}, ${window.FLAG_MAP.isRedirected}`)
-if (!window.FLAG_MAP.isInlineExecuted) redirectSuspiciousAccess();
+
+//if (!window.FLAG_MAP.isInlineExecuted) redirectSuspiciousAccess();
+(async () => {
+  try{
+    if (window.FLAG_MAP.isInlineExecuted) await gate;
+  }
+  catch(e){
+    //console.log("error occured in inline logic");
+  }
+  finally{
+    if (!window.FLAG_MAP.isRedirected) isSuspiciousAccess();
+  }
+})();
+
