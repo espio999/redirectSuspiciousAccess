@@ -10,13 +10,18 @@ function executeRedirect(){
     let destination_url = CONFIG.REDIRECT_BASE;
 
     switch (window.FLAG_MAP.reason) {
+        case "clarity":
+        case "clicky":
+        case "cloudflare":
         case "fetch":
+        case "juicer":
+        case "statcounter":
+        case "umami":
             destination_url = CONFIG.WARNING_URL + CONFIG.ORIGINAL_URL + CONFIG.WARNING_HASH;
             break;
         default:
             destination_url = CONFIG.REDIRECT_BASE;
     }
 
-    //console.log(destination_url);
     window.location.replace(destination_url);
 }

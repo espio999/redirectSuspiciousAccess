@@ -33,6 +33,9 @@ async function logToDiscord() {
                 { name: "Languages", value: languages.toString(), inline: true },
                 { name: "Previous URL", value: previous_url, inline: true },
                 { name: "Current URL", value: current_url, inline: true },
+                { name: "isInlineExecuted", value: window.FLAG_MAP.isInlineExecuted, inline: true },
+                { name: "isNoReferrer", value: window.FLAG_MAP.isNoReferrer, inline: true },
+                { name: "isRedirected", value: window.FLAG_MAP.isRedirected, inline: true },
                 { name: "Comment", value: window.FLAG_MAP.reason, inline: false },
                 { name: "UserAgent", value: `\`\`\`${UA}\`\`\``, inline: false }
             ],

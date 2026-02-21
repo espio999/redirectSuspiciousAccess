@@ -85,15 +85,12 @@ const SCREEN_HEIGHT = (is_undefined) ? 0 : screen.height;
 
 window.FLAG_MAP = window.FLAG_MAP || {
   isInlineExecuted: false,
-  isMainExecuted: false,
   isFriendlyBot: (isFriendlyBot() && !isE2Etest()),
   isNoReferrer: !USER_REFERRER,
   isRedirected: isRedirected(),
   reason: "",
   log_mode: "",
 }
-
-window.FLAG_MAP.isMainExecuted = true;
 
 //if (!window.FLAG_MAP.isInlineExecuted) redirectSuspiciousAccess();
 (async () => {
