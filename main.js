@@ -93,7 +93,7 @@ window.FLAG_MAP = window.FLAG_MAP || {
 }
 
 //if (!window.FLAG_MAP.isInlineExecuted) redirectSuspiciousAccess();
-(async () => {
+(async () => { 
   try{
     if (window.FLAG_MAP.isInlineExecuted) await gate;
   }
@@ -101,6 +101,7 @@ window.FLAG_MAP = window.FLAG_MAP || {
     //console.log("error occured in inline logic");
   }
   finally{
+    //await new Promise(resolve => setTimeout(resolve, 0));
     if (!window.FLAG_MAP.isRedirected) isSuspiciousAccess();
   }
 })();
