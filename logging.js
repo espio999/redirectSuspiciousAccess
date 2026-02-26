@@ -61,3 +61,5 @@ async function logToDiscord() {
         executeRedirect();
     }
 }
+
+window.file_logging = true;

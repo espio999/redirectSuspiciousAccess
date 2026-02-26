@@ -25,3 +25,5 @@ function executeRedirect(){
 
     window.location.replace(destination_url);
 }
+
+window.file_redirect = true;

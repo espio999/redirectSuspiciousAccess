@@ -247,3 +247,5 @@ function is360(){
     const my_reg = /360se|WOW64|QIHU/i;
     return !!(UA && my_reg.test(UA));
 }
+
+window.file_test = true;

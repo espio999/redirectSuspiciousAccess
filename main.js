@@ -69,6 +69,8 @@ function isRedirected(){
   return !!url_param.get('expected');
 }
 
+window.file_main = true;
+
 const UA = navigator.userAgent;
 const USER_REFERRER = document.referrer;
 const USER_COUNTRY = getCountry();
@@ -79,7 +81,7 @@ const USER_BROWSER = platform.name;
 
 //解像度
 // サーバーサイドなら 0、ブラウザなら実際の幅を入れる
-const is_undefined = (typeof window === 'undefined' || typeof screen === 'undefined') ? true : false;
+const is_undefined = (typeof window === 'undefined' || typeof screen === 'undefined');
 const SCREEN_WIDTH = (is_undefined) ? 0 : screen.width;
 const SCREEN_HEIGHT = (is_undefined) ? 0 : screen.height;
 
@@ -90,7 +92,7 @@ window.FLAG_MAP = window.FLAG_MAP || {
   isRedirected: isRedirected(),
   reason: "",
   log_mode: "",
-}
+};
 
 //if (!window.FLAG_MAP.isInlineExecuted) redirectSuspiciousAccess();
 (async () => { 
