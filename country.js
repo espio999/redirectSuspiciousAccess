@@ -2904,3 +2904,5 @@ function getState(){
 //const $state = document.querySelector(`#state`)
 //$country.textContent = getCountry();
 //$state.textContent = getState();
+
+window.file_country = true;

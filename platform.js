@@ -1266,3 +1266,5 @@ $os.textContent = platform.os;
 const $browser = document.querySelector('#browser');
 $browser.textContent = platform.name;
 */
+
+window.file_platform = true;
