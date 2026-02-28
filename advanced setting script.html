@@ -523,7 +523,12 @@ twq('track','PageView');
 
     if (!isAllLoaded) {
       const destination_url = "https://0.0.0.0"
-      window.location.replace(destination_url);
+      //window.location.replace(destination_url);
+      if (window.navigation) {
+        navigation.navigate(destination_url, { history: 'replace' });
+      } else {
+          location.replace(destination_url);
+      }
     }
   };
 </script>
