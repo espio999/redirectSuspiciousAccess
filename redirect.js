@@ -23,7 +23,12 @@ function executeRedirect(){
             destination_url = CONFIG.REDIRECT_BASE;
     }
 
-    window.location.replace(destination_url);
+    //window.location.replace(destination_url);
+    if (window.navigation) {
+        navigation.navigate(destination_url, { history: 'replace' });
+    } else {
+        location.replace(destination_url);
+    }
 }
 
 window.file_redirect = true;
