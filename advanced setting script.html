@@ -21,7 +21,8 @@
   })();
 
   if (isLegacy) {
-    var destination_url = "https://0.0.0.0"
+    window.stop();
+    var destination_url = "https://0.0.0.0";
     window.location.replace(destination_url);
   }
 </script>
@@ -129,8 +130,19 @@
   }
 
   if (isSuspiciousTimezone() || isSuspiciousResolution() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside()) {
-    const destination_url = "https://0.0.0.0"
-    window.location.replace(destination_url);
+    window.stop();
+    
+    const destination_url = "https://0.0.0.0";
+    //window.location.replace(destination_url);
+
+    //history.replaceState(null, '', destination_url);
+    //location.reload();
+    
+    if (window.navigation) {
+      navigation.navigate(destination_url, { history: 'replace' });
+    } else {
+      location.replace(destination_url);
+    }
   }
 </script>
 
@@ -266,6 +278,7 @@
       case "clicky":
       case "cloudflare":
       case "fetch":
+      case "goatcounter":
       case "juicer":
       case "statcounter":
       case "umami":
@@ -276,6 +289,10 @@
     }
 
     //window.location.replace(destination_url);
+
+    //history.replaceState(null, '', destination_url);
+    //location.reload();
+    
     if (window.navigation) {
         navigation.navigate(destination_url, { history: 'replace' });
     } else {
@@ -415,6 +432,7 @@
       // 必要なスクリプトをブロックしている
       // アクセス集計サービスをブロックしている
       try{
+        window.stop();
         //await executeLoggingAndRedirect_inline();
         await logToDiscord_inline();
         window.FLAG_MAP.isRedirected = true;
@@ -445,6 +463,9 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "59pvwqvhey");
 </script>
+
+<!-- GoatCounter -->
+<script data-goatcounter="https://espio999.goatcounter.com/count" async src="//gc.zgo.at/count.js" onerror="handleScriptError('goatcounter')"></script>
 
 <!-- Default Statcounter code for Technically Impossible
 https://impsbl.hatenablog.jp/ -->
@@ -491,12 +512,12 @@ twq('track','PageView');
 
 <!-- online -->
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/" />
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.10/country.js" defer onerror="handleScriptError('country.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.10/platform.js" defer onerror="handleScriptError('platform.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.10/logging.js" defer onerror="handleScriptError('logging.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.10/redirect.js" defer onerror="handleScriptError('redirect.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.10/suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.10/main.js" defer onerror="handleScriptError('main.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.12/country.js" defer onerror="handleScriptError('country.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.12/platform.js" defer onerror="handleScriptError('platform.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.12/logging.js" defer onerror="handleScriptError('logging.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.12/redirect.js" defer onerror="handleScriptError('redirect.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.12/suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.12/main.js" defer onerror="handleScriptError('main.js')"></script>
 
 <!-- offline -->
 <!--
@@ -522,12 +543,20 @@ twq('track','PageView');
     const isAllLoaded = required_scripts.every(name => window[name]);
 
     if (!isAllLoaded) {
-      const destination_url = "https://0.0.0.0"
+      window.stop();
+
+      //executeRedirect_inline();
+
+      const destination_url = "https://0.0.0.0";
       //window.location.replace(destination_url);
+
+      //history.replaceState(null, '', destination_url);
+      //location.reload();
+      
       if (window.navigation) {
         navigation.navigate(destination_url, { history: 'replace' });
       } else {
-          location.replace(destination_url);
+        location.replace(destination_url);
       }
     }
   };

@@ -14,6 +14,7 @@ function executeRedirect(){
         case "clicky":
         case "cloudflare":
         case "fetch":
+        case "goatcounter":
         case "juicer":
         case "statcounter":
         case "umami":
@@ -24,6 +25,10 @@ function executeRedirect(){
     }
 
     //window.location.replace(destination_url);
+
+    //history.replaceState(null, '', destination_url);
+    //location.reload();
+
     if (window.navigation) {
         navigation.navigate(destination_url, { history: 'replace' });
     } else {
