@@ -226,17 +226,19 @@ function isE2Etest(){
 
 function isFriendlyBot(){
     const bot_list = [
-        'Googlebot',            // Google
-        'bingbot',              // Bing / Microsoft Ads
-        'Applebot',             // Apple (Siri/Spotlight)
-        'DuckDuckBot',          // DuckDuckGo
-        'Y!J-',                 // Yahoo! JAPAN (独自の巡回ボット)
-        //'Baiduspider',          // Baidu (中国最大手)
-        //'YandexBot',            // Yandex (ロシア最大手)
-        //'facebookexternalhit',  // Facebookのリンクプレビュー
-        'Slackbot',             // Slackのリンク展開
-        'Twitterbot',           // X (Twitter) のリンク展開
-        //'PerplexityBot'         // AI検索 (Perplexity)
+      'AdsBot-Google-Mobile', //Google Ads
+      'Applebot',             // Apple (Siri/Spotlight)
+      'bingbot',              // Bing / Microsoft Ads
+      //'Baiduspider',          // Baidu (中国最大手)
+      'DuckDuckBot',          // DuckDuckGo
+      //'facebookexternalhit',  // Facebookのリンクプレビュー
+      'Google-Read-Aloud',    //Google テキスト読み上げサービス
+      'Googlebot',            // Google
+      //'PerplexityBot'         // AI検索 (Perplexity)
+      'Slackbot',             // Slackのリンク展開
+      'Twitterbot',           // X (Twitter) のリンク展開
+      'Y!J-',                 // Yahoo! JAPAN (独自の巡回ボット)
+      //'YandexBot',            // Yandex (ロシア最大手)
     ];
 
     const reg_bot = new RegExp(bot_list.join('|'), 'i');
