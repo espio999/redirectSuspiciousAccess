@@ -238,6 +238,7 @@ function isFriendlyBot(){
       'DuckDuckBot',          // DuckDuckGo
       //'facebookexternalhit',  // Facebookのリンクプレビュー
       'Google-Read-Aloud',    //Google テキスト読み上げサービス
+      'Google-Safety',    //Google テキスト読み上げサービス
       'Googlebot',            // Google
       //'PerplexityBot'         // AI検索 (Perplexity)
       'Slackbot',             // Slackのリンク展開
