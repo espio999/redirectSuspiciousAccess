@@ -83,6 +83,7 @@
         "939,587","587,939",
         "981,613","613,981",
         "1024,1280","1280,1024",
+        "1128,752",
         "1200,1280","1280,1200",
         "1200,1920","1920,1200",
         "1200,3000",
@@ -90,12 +91,18 @@
         "1232,1524","1524,1232",
         "1262,1440","1440,1262",
         "1366,1366",
+        "1463,823",
+        "1536,864",
         "1600,1000",
         "1600,1600",
+        "1664,1110",
+        "1707,960",
+        "1707,1067",
+        "1720,720",
         "1873,1103",
         "1895,1039",
         "1938,1068",
-        //"3072,1728",
+        "3072,1728",
     ]);
 
     const is_undefined = (typeof window === 'undefined' || typeof screen === 'undefined');
@@ -105,6 +112,68 @@
     const isSuspicious = suspicious_resolution.has(my_pair.join(','));
     return isSuspicious;
   }
+
+  /*function isSuspiciousCombination() {
+    const suspicious_resolutions = new Set([
+      "1280,720",
+      "1920,1080",
+      "2560,1440",
+    ]);
+
+    const suspicious_languages = new Set([
+      "ja-JP,en-US,ja,en",
+    ]);
+
+    const is_undefined = (typeof window === 'undefined' || typeof screen === 'undefined' || typeof navigator === 'undefined');
+    if (is_undefined) return false;
+
+    const my_res_pair = `${screen.width},${screen.height}`;
+    
+    const my_lang_pair = navigator.languages ? navigator.languages.join(',') : navigator.language;
+
+    const isResSuspicious = suspicious_resolutions.has(my_res_pair);
+    const isLangSuspicious = suspicious_languages.has(my_lang_pair);
+
+    return isResSuspicious && isLangSuspicious;
+  }*/
+ 
+  /*function isSuspiciousCombination() {
+    const suspicious_patterns = [
+      "800,600,America/New_York,en-US",
+      "1128,752,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "1829,1143,Asia/Tokyo,en-US,en,ja",
+      "1251,1409,Asia/Hong_Kong,zh-CN,zh",
+      "1280,720,Asia/Tokyo,en-US,en,ja",
+      "1280,720,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "1280,1200,Asia/Shanghai,en-US",
+      "1316,1364,Asia/Singapore,zh-CN,zh",
+      "1463,823,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "1536,864,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "1664,1110,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "1720,720,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "1920,1080,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "1920,1080,Europe/Moscow,tr-TR,tr,en-US,en",
+      "2048,1152,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "2560,1440,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "3072,1728,Asia/Tokyo,ja-JP,en-US,ja,en",
+    ];
+
+    const is_undefined = (
+      typeof window === 'undefined' || 
+      typeof screen === 'undefined' || 
+      typeof navigator === 'undefined' ||
+      typeof Intl === 'undefined'
+    );
+    if (is_undefined) return false;
+
+    const my_res = `${screen.width},${screen.height}`;
+    const my_tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const my_langs = navigator.languages ? navigator.languages.join(',') : navigator.language;
+
+    const current_status = `${my_res},${my_tz},${my_langs}`;
+
+    return suspicious_patterns.some(pattern => current_status === pattern);
+  }*/
 
   function is360browser(){
     const ua = navigator.userAgent;
@@ -132,7 +201,7 @@
     return (typeof window === 'undefined' || typeof screen === 'undefined')
   }
 
-  if (isSuspiciousTimezone() || isSuspiciousResolution() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside()) {
+  if (isSuspiciousTimezone() || isSuspiciousResolution() || isSuspiciousCombination() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside()) {
     window.stop();
     
     const destination_url = "https://0.0.0.0";

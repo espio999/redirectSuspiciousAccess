@@ -1,4 +1,5 @@
 async function executeLoggingAndRedirect() {
+  window.stop();
   await logToDiscord();
   executeRedirect();
 }
@@ -29,7 +30,7 @@ async function isSuspiciousAccess() {
   }
 
   // 解像度をチェック（対象ならリダイレクト、そうでなければ次の検閲へ）
-  if (isInappropriateResolution()){
+  if (isSuspiciousCombination() || isSuspiciousResolution()){
     window.FLAG_MAP.reason = "resolution";
     window.FLAG_MAP.log_mode = "redirect";
     await executeLoggingAndRedirect();

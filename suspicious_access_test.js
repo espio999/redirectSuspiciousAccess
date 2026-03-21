@@ -150,8 +150,45 @@ function isProhibitedTimezone(){
     return USER_COUNTRY === null || prohibited_countries.includes(USER_COUNTRY);
 }
 
+function isSuspiciousCombination() {
+const suspicious_patterns = [
+    "800,600,America/New_York,en-US",
+    "1128,752,Asia/Tokyo,ja-JP,en-US,ja,en",
+    "1829,1143,Asia/Tokyo,en-US,en,ja",
+    "1251,1409,Asia/Hong_Kong,zh-CN,zh",
+    "1280,720,Asia/Tokyo,en-US,en,ja",
+    "1280,720,Asia/Tokyo,ja-JP,en-US,ja,en",
+    "1280,1200,Asia/Shanghai,en-US",
+    "1316,1364,Asia/Singapore,zh-CN,zh",
+    "1463,823,Asia/Tokyo,ja-JP,en-US,ja,en",
+    "1536,864,Asia/Tokyo,ja-JP,en-US,ja,en",
+    "1664,1110,Asia/Tokyo,ja-JP,en-US,ja,en",
+    "1720,720,Asia/Tokyo,ja-JP,en-US,ja,en",
+    "1920,1080,Asia/Tokyo,ja-JP,en-US,ja,en",
+    "1920,1080,Europe/Moscow,tr-TR,tr,en-US,en",
+    "2048,1152,Asia/Tokyo,ja-JP,en-US,ja,en",
+    "2560,1440,Asia/Tokyo,ja-JP,en-US,ja,en",
+    "3072,1728,Asia/Tokyo,ja-JP,en-US,ja,en",
+];
 
-function isInappropriateResolution(){
+const is_undefined = (
+    typeof window === 'undefined' || 
+    typeof screen === 'undefined' || 
+    typeof navigator === 'undefined' ||
+    typeof Intl === 'undefined'
+);
+if (is_undefined) return false;
+
+const my_res = `${screen.width},${screen.height}`;
+const my_tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const my_langs = navigator.languages ? navigator.languages.join(',') : navigator.language;
+
+const current_status = `${my_res},${my_tz},${my_langs}`;
+
+return suspicious_patterns.some(pattern => current_status === pattern);
+}
+
+function isSuspiciousResolution(){
     //検閲対象解像度
     const target_resolution = new Set([
         "0,0",
