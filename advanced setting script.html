@@ -137,12 +137,17 @@
     return isResSuspicious && isLangSuspicious;
   }*/
  
-  /*function isSuspiciousCombination() {
+  function isSuspiciousCombination() {
     const suspicious_patterns = [
       "800,600,America/New_York,en-US",
+      "800,600,America/New_York,en-US,en",
       "1128,752,Asia/Tokyo,ja-JP,en-US,ja,en",
-      "1829,1143,Asia/Tokyo,en-US,en,ja",
+      "1200,1920,Asia/Tokyo,en-US,en",
+      "1200,1920,Asia/Tokyo,ja,en-US,en",
+      "1232,1524,Asia/Hong_Kong,zh-CN,zh",
       "1251,1409,Asia/Hong_Kong,zh-CN,zh",
+      "1259,1413,Asia/Hong_Kong,zh-CN,zh",
+      "1274,1347,Asia/Singapore,zh-CN,zh",
       "1280,720,Asia/Tokyo,en-US,en,ja",
       "1280,720,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1280,1200,Asia/Shanghai,en-US",
@@ -151,9 +156,15 @@
       "1536,864,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1664,1110,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1720,720,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "1829,1143,Asia/Tokyo,en-US,en,ja",
+      "1920,1080,Asia/Tokyo,en-US,en",
+      "1920,1080,Asia/Tokyo,en-US,en,ja",
       "1920,1080,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "1920,1080,Asia/Tokyo,vi-VN,vi,fr-FR,fr,en-US,en",
       "1920,1080,Europe/Moscow,tr-TR,tr,en-US,en",
       "2048,1152,Asia/Tokyo,ja-JP,en-US,ja,en",
+      "2560,1440,Asia/Tokyo,en-US,en",
+      "2560,1440,Asia/Tokyo,ja,en-US,en,zh-CN",
       "2560,1440,Asia/Tokyo,ja-JP,en-US,ja,en",
       "3072,1728,Asia/Tokyo,ja-JP,en-US,ja,en",
     ];
@@ -173,7 +184,7 @@
     const current_status = `${my_res},${my_tz},${my_langs}`;
 
     return suspicious_patterns.some(pattern => current_status === pattern);
-  }*/
+  }
 
   function is360browser(){
     const ua = navigator.userAgent;
@@ -201,7 +212,7 @@
     return (typeof window === 'undefined' || typeof screen === 'undefined')
   }
 
-  if (isSuspiciousTimezone() || isSuspiciousResolution() || isSuspiciousCombination() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside()) {
+  if (!document.referrer && (isSuspiciousTimezone() || isSuspiciousResolution() ||isSuspiciousCombination() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside())) {
     window.stop();
     
     const destination_url = "https://0.0.0.0";
@@ -585,12 +596,12 @@ twq('track','PageView');
 
 <!-- online -->
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/" />
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.17/country.js" defer onerror="handleScriptError('country.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.17/platform.js" defer onerror="handleScriptError('platform.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.17/logging.js" defer onerror="handleScriptError('logging.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.17/redirect.js" defer onerror="handleScriptError('redirect.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.17/suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.17/main.js" defer onerror="handleScriptError('main.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/country.js" defer onerror="handleScriptError('country.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/platform.js" defer onerror="handleScriptError('platform.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/logging.js" defer onerror="handleScriptError('logging.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/redirect.js" defer onerror="handleScriptError('redirect.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/main.js" defer onerror="handleScriptError('main.js')"></script>
 
 <!-- offline -->
 <!--
