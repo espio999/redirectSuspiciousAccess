@@ -29,6 +29,47 @@
 
 <!--　最初の検閲　-->
 <script>
+  function isFriendlyBot_inline(){
+    const bot_list = [
+      'AdsBot-Google-Mobile', //Google Ads
+      'Applebot',             // Apple (Siri/Spotlight)
+      'bingbot',              // Bing / Microsoft Ads
+      //'Baiduspider',          // Baidu (中国最大手)
+      'DuckDuckBot',          // DuckDuckGo
+      //'facebookexternalhit',  // Facebookのリンクプレビュー
+      'Google-InspectionTool',  //URL検査ツール
+      'Google-Read-Aloud',    //Google テキスト読み上げサービス
+      'Google-Safety',    //Google テキスト読み上げサービス
+      'Google-Site-Verification', //サイトの所有権確認
+      'Googlebot',            // Google
+      //'PerplexityBot'         // AI検索 (Perplexity)
+      'Slackbot',             // Slackのリンク展開
+      'Twitterbot',           // X (Twitter) のリンク展開
+      'Y!J-',                 // Yahoo! JAPAN (独自の巡回ボット)
+      //'YandexBot',            // Yandex (ロシア最大手)
+    ];
+
+    const reg_bot = new RegExp(bot_list.join('|'), 'i');
+    return reg_bot.test(navigator.userAgent);
+  }
+  
+  function isE2Etest_inline(){
+    //E2Eテストライブラリのオブジェクトを確認
+    //一つでもロードされているとtruthy→一つ目の!でfalse、二つ目の!でtrue
+    //一つもロードされていないとfalse →一つ目の!でtrue、二つ目の!でfalse
+    const isBot = !!(
+      window.__nightmare || 
+      navigator.webdriver || 
+      window.Cypress || 
+      window._phantom
+    );
+
+    //言語設定されていない状況を判定
+    const hasNoLanguage = !!(navigator.languages && navigator.languages.length === 0);
+
+    return (isBot || hasNoLanguage);
+  }
+
   function isSuspiciousQuery(){
     const suspicious_keys = new Set([
       'ad_format_ids',
@@ -144,21 +185,27 @@
       "1128,752,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1200,1920,Asia/Tokyo,en-US,en",
       "1200,1920,Asia/Tokyo,ja,en-US,en",
+      "1208,1378,Asia/Singapore,zh-CN,zh",
       "1232,1524,Asia/Hong_Kong,zh-CN,zh",
+      "1244,1363,Asia/Singapore,zh-CN,zh",
       "1251,1409,Asia/Hong_Kong,zh-CN,zh",
       "1259,1413,Asia/Hong_Kong,zh-CN,zh",
       "1274,1347,Asia/Singapore,zh-CN,zh",
       "1280,720,Asia/Tokyo,en-US,en,ja",
       "1280,720,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1280,1200,Asia/Shanghai,en-US",
+      "1294,1403,Asia/Singapore,zh-CN,zh",
       "1316,1364,Asia/Singapore,zh-CN,zh",
+      "1365,1343,America/Mexico_City,zh-CN,zh",
       "1463,823,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1536,864,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1664,1110,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1720,720,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1829,1143,Asia/Tokyo,en-US,en,ja",
+      "1920,1080,Asia/Baku,en-US",
       "1920,1080,Asia/Tokyo,en-US,en",
       "1920,1080,Asia/Tokyo,en-US,en,ja",
+      "1920,1080,Asia/Tokyo,ja,en-US,en,zh-CN",
       "1920,1080,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1920,1080,Asia/Tokyo,vi-VN,vi,fr-FR,fr,en-US,en",
       "1920,1080,Europe/Moscow,tr-TR,tr,en-US,en",
@@ -212,7 +259,10 @@
     return (typeof window === 'undefined' || typeof screen === 'undefined')
   }
 
-  if (!document.referrer && (isSuspiciousTimezone() || isSuspiciousResolution() ||isSuspiciousCombination() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside())) {
+  const isDirectAccess = !document.referrer;
+  const isSuspiciousBot = !(isFriendlyBot_inline() && !isE2Etest_inline());
+
+  if (isDirectAccess && isSuspiciousBot && (isSuspiciousTimezone() || isSuspiciousResolution() ||isSuspiciousCombination() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside())) {
     window.stop();
     
     const destination_url = "https://0.0.0.0";
@@ -231,7 +281,7 @@
 
 <!--　フラグ設定　-->
 <script>
-  function isE2Etest_inline(){
+  /*function isE2Etest_inline(){
     //E2Eテストライブラリのオブジェクトを確認
     //一つでもロードされているとtruthy→一つ目の!でfalse、二つ目の!でtrue
     //一つもロードされていないとfalse →一つ目の!でtrue、二つ目の!でfalse
@@ -246,9 +296,9 @@
     const hasNoLanguage = !!(navigator.languages && navigator.languages.length === 0);
 
     return (isBot || hasNoLanguage);
-  }
+  }*/
 
-  function isFriendlyBot_inline(){
+  /*function isFriendlyBot_inline(){
     const bot_list = [
       'AdsBot-Google-Mobile', //Google Ads
       'Applebot',             // Apple (Siri/Spotlight)
@@ -256,8 +306,10 @@
       //'Baiduspider',          // Baidu (中国最大手)
       'DuckDuckBot',          // DuckDuckGo
       //'facebookexternalhit',  // Facebookのリンクプレビュー
+      'Google-InspectionTool',  //URL検査ツール
       'Google-Read-Aloud',    //Google テキスト読み上げサービス
       'Google-Safety',    //Google テキスト読み上げサービス
+      'Google-Site-Verification', //サイトの所有権確認
       'Googlebot',            // Google
       //'PerplexityBot'         // AI検索 (Perplexity)
       'Slackbot',             // Slackのリンク展開
@@ -268,7 +320,7 @@
 
     const reg_bot = new RegExp(bot_list.join('|'), 'i');
     return reg_bot.test(navigator.userAgent);
-  }
+  }*/
 
   function isRedirected_inline(){
     const url_param = new URLSearchParams(window.location.search);
@@ -496,7 +548,7 @@
       // リダイレクト後は、エラー処理不要
       // 検閲のみ実行する
       if (window.FLAG_MAP.isRedirected) {
-        window.FLAG_MAP.isRedirected = false;
+        //window.FLAG_MAP.isRedirected = false;
         unlock();
         return false;
       }
