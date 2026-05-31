@@ -34,6 +34,7 @@
       'AdsBot-Google-Mobile', //Google Ads
       'Applebot',             // Apple (Siri/Spotlight)
       'bingbot',              // Bing / Microsoft Ads
+      'aka.ms/Microsoft',     // Microsoft clawler
       //'Baiduspider',          // Baidu (中国最大手)
       'DuckDuckBot',          // DuckDuckGo
       //'facebookexternalhit',  // Facebookのリンクプレビュー
@@ -123,6 +124,7 @@
         "810,1080","1080,810",
         "939,587","587,939",
         "981,613","613,981",
+        "1024,1024",
         "1024,1280","1280,1024",
         "1128,752",
         "1200,1280","1280,1200",
@@ -178,6 +180,28 @@
     return isResSuspicious && isLangSuspicious;
   }*/
  
+  function isSuspiciousRegion(){
+    const suspicious_patterns = [
+      "America/Mexico_City,zh-CN,zh",
+      "Asia/Hong_Kong,zh-CN,zh",
+      "Asia/Singapore,zh-CN,zh",
+    ];
+
+    const is_undefined = (
+      typeof window === 'undefined' || 
+      typeof navigator === 'undefined' ||
+      typeof Intl === 'undefined'
+    );
+    if (is_undefined) return false;
+
+    const my_tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const my_langs = navigator.languages ? navigator.languages.join(',') : navigator.language;
+
+    const current_status = `${my_tz},${my_langs}`;
+
+    return suspicious_patterns.some(pattern => current_status === pattern);
+  }
+  
   function isSuspiciousCombination() {
     const suspicious_patterns = [
       "800,600,America/New_York,en-US",
@@ -186,17 +210,34 @@
       "1200,1920,Asia/Tokyo,en-US,en",
       "1200,1920,Asia/Tokyo,ja,en-US,en",
       "1208,1378,Asia/Singapore,zh-CN,zh",
+      "1218,1460,Asia/Los_Angeles,zh-CN,zh",
       "1232,1524,Asia/Hong_Kong,zh-CN,zh",
+      "1242,1393,America/Los_Angeles,zh-CN,zh",
       "1244,1363,Asia/Singapore,zh-CN,zh",
       "1251,1409,Asia/Hong_Kong,zh-CN,zh",
+      "1254,1387,America/Los_Angeles,zh-CN,zh",
       "1259,1413,Asia/Hong_Kong,zh-CN,zh",
+      "1266,1350,America/Los_Angeles,zh-CN,zh",
+      "1270,1525,America/Los_Angeles,zh-CN,zh",
+      "1271,1506,America/Los_Angeles,zh-CN,zh",
       "1274,1347,Asia/Singapore,zh-CN,zh",
       "1280,720,Asia/Tokyo,en-US,en,ja",
       "1280,720,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1280,1200,Asia/Shanghai,en-US",
       "1294,1403,Asia/Singapore,zh-CN,zh",
+      "1295,1399,Asia/Los_Angeles,zh-CN,zh",
+      "1306,1338,America/Mexico_City,zh-CN,zh",
       "1316,1364,Asia/Singapore,zh-CN,zh",
+      "1321,1419,America/Los_Angeles,zh-CN,zh",
+      "1343,1475,America/Mexico_City,zh-CN,zh",
+      "1355,1454,Asia/Singapore,zh-CN,zh",
+      "1361,1351,America/Los_Angeles,zh-CN,zh",
+      "1365,1340,America/Los_Angeles,zh-CN,zh",
       "1365,1343,America/Mexico_City,zh-CN,zh",
+      "1370,1435,America/Mexico_City,zh-CN,zh",
+      "1378,1416,America/Mexico_City,zh-CN,zh",
+      "1381,1368,Asia/Singapore,zh-CN,zh",
+      "1384,1420,Asia/Singapore,zh-CN,zh",
       "1463,823,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1536,864,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1664,1110,Asia/Tokyo,ja-JP,en-US,ja,en",
@@ -262,7 +303,7 @@
   const isDirectAccess = !document.referrer;
   const isSuspiciousBot = !(isFriendlyBot_inline() && !isE2Etest_inline());
 
-  if (isDirectAccess && isSuspiciousBot && (isSuspiciousTimezone() || isSuspiciousResolution() ||isSuspiciousCombination() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside())) {
+  if (isDirectAccess && isSuspiciousBot && (isSuspiciousTimezone() || isSuspiciousRegion() || isSuspiciousResolution() || isSuspiciousCombination() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside())) {
     window.stop();
     
     const destination_url = "https://0.0.0.0";
@@ -420,6 +461,7 @@
       case "juicer":
       case "statcounter":
       case "umami":
+        return;
         destination_url = CONFIG.WARNING_URL + CONFIG.ORIGINAL_URL + CONFIG.WARNING_HASH;
         break;
       default:
@@ -593,9 +635,13 @@
 </script>
 
 <!-- Cloudflare Web Analytics -->
+<!--
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "22648483c0f34f21bf4ba5292447704b"}' onerror="handleScriptError('cloudflare')"></script>
+-->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "22648483c0f34f21bf4ba5292447704b"}'></script>
 
 <!-- Clarity tracking code for https://impsbl.hatenablog.jp/ -->
+<!--
 <script>
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -603,6 +649,35 @@
         t.setAttribute('onerror', "handleScriptError('clarity')");
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "59pvwqvhey");
+</script>
+-->
+<script>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "59pvwqvhey");
+
+    // 2. ユーザーの操作に応じた処理
+    function onUserAccept() {
+      // 同意ボタンが押されたら呼び出す
+      if (typeof window.clarity === "function") {
+          window.clarity('consentv2', {
+            ad_Storage: 'granted',
+            analytics_Storage: 'granted'
+          });
+      }
+      localStorage.setItem('cookie_consent', 'granted');
+    }
+
+    // 3. ページ読み込み時に保存済みの同意状態をチェック
+    const savedConsent = localStorage.getItem('cookie_consent');
+    if (savedConsent === 'granted') {
+      onUserAccept();
+    }
+    else {
+      onUserAccept();
+    }
 </script>
 
 <!-- Default Statcounter code for Technically Impossible
@@ -612,24 +687,40 @@ var sc_project=13010108;
 var sc_invisible=1; 
 var sc_security="a666689f"; 
 </script>
+<!--
 <script type="text/javascript"
 src="https://www.statcounter.com/counter/counter.js" async onerror="handleScriptError('statcounter')"></script>
+-->
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js" async></script>
 <noscript><div class="statcounter"><a title="Web Analytics"
 href="https://statcounter.com/" target="_blank"><img class="statcounter"
 src="https://c.statcounter.com/13010108/0/a666689f/1/" alt="Web Analytics"
 referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 <!-- clicky -->
+<!--
 <script async data-id="101500195" src="//static.getclicky.com/js" onerror="handleScriptError('clicky')"></script>
+-->
+<script async data-id="101500195" src="//static.getclicky.com/js"></script>
 
 <!-- umami -->
+<!--
 <script defer src="https://cloud.umami.is/script.js" data-website-id="e1f53978-b437-4804-aa5a-bf515c5e190a" onerror="handleScriptError('umami')"></script>
+-->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="e1f53978-b437-4804-aa5a-bf515c5e190a"></script>
 
 <!-- GoatCounter -->
+<!--
 <script data-goatcounter="https://espio999.goatcounter.com/count" async src="//gc.zgo.at/count.js" onerror="handleScriptError('goatcounter')"></script>
+-->
+<script data-goatcounter="https://espio999.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
 <!-- juicer -->
+<!--
 <script src="//kitchen.juicer.cc/?color=cevlk5DYGbE=" async onerror="handleScriptError('juicer')"></script>
+-->
+<script src="//kitchen.juicer.cc/?color=cevlk5DYGbE=" async></script>
 <meta name="pocket-site-verification" content="0298daba47760e2b25d7f69a6c6459" />
 
 <!----- MathML ----->
@@ -648,12 +739,20 @@ twq('track','PageView');
 
 <!-- online -->
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/" />
+<!--
 <script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/country.js" defer onerror="handleScriptError('country.js')"></script>
 <script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/platform.js" defer onerror="handleScriptError('platform.js')"></script>
 <script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/logging.js" defer onerror="handleScriptError('logging.js')"></script>
 <script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/redirect.js" defer onerror="handleScriptError('redirect.js')"></script>
 <script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/main.js" defer onerror="handleScriptError('main.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/main.js" defer onerror="handleScriptError('main.js')"></script>>
+-->
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/country.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/platform.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/logging.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/redirect.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/suspicious_access_test.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.18/main.js" defer></script>
 
 <!-- offline -->
 <!--
