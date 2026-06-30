@@ -81,6 +81,7 @@ function isProhibitedEnvironment() {
         "Linux|Chrome|1280|720",
         "Linux|Chrome|1280|800",
         "Linux|Chrome|1200|1920", //"Linux|Chrome|1920|1200",
+        "Linux|Chrome|2560|1440",
         "Linux|Firefox|1024|1280", "Linux|Firefox|1280|1024",
         "Linux|Firefox|1200|1920", //"Linux|Firefox|1920|1200",
         "Linux|Firefox|1671|1114",
