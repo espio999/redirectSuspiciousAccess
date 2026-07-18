@@ -154,6 +154,7 @@ function isProhibitedTimezone(){
 
 function isSuspiciousCombination() {
     const suspicious_patterns = [
+        "America/Los_Angeles,zh-CN",
         "America/Los_Angeles,zh-CN,zh",
     ];
 
