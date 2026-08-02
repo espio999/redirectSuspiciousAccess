@@ -156,6 +156,8 @@ function isSuspiciousCombination() {
     const suspicious_patterns = [
         "America/Los_Angeles,zh-CN",
         "America/Los_Angeles,zh-CN,zh",
+        "America/Mexico_City,zh-CN",
+        "Asia/Singapore,zh-CN",
     ];
 
     const is_undefined = (
