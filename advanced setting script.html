@@ -71,31 +71,9 @@
     return (isBot || hasNoLanguage);
   }
 
-  function isSuspiciousQuery(){
-    const suspicious_keys = new Set([
-      'ad_format_ids',
-      'sua',
-      'gclid',
-      'fbclid',   // Facebookの追跡ID（不要な場合）
-      'msclkid',  // Microsoft広告の追跡ID
-    ]);
-
-    const query_params = new URLSearchParams(window.location.search);
-
-    let isSuspicious = false;
-    for (const key of query_params.keys()) {
-      if (suspicious_keys.has(key)) {
-          isSuspicious = true;
-          break;
-      }
-    }
-
-    return isSuspicious;
-  }
-
   function isSuspiciousTimezone(){
     const suspicious_timezone = new Set([
-      'Asia/Hong_Kong',
+      //'Asia/Hong_Kong',
       'Asia/Shanghai',
       'Europe/Moscow',
       'Etc/Unknown',
@@ -110,44 +88,67 @@
       return true;
     }
   }
-  
+
+  function isSuspiciousRegion(){
+    const suspicious_patterns = [
+      'America/Mexico_City,zh-CN,zh',
+      'Asia/Hong_Kong,zh-CN,zh',
+      'Asia/Singapore,zh-CN,zh',
+    ];
+
+    const is_undefined = (
+      typeof window === 'undefined' || 
+      typeof navigator === 'undefined' ||
+      typeof Intl === 'undefined'
+    );
+    if (is_undefined) return false;
+
+    const my_tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const my_langs = navigator.languages ? navigator.languages.join(',') : navigator.language;
+
+    const current_status = `${my_tz},${my_langs}`;
+
+    return suspicious_patterns.some(pattern => current_status === pattern);
+  }
+
   function isSuspiciousResolution(){
     const suspicious_resolution = new Set([
-        "0,0",
-        //"360,780","780,360",
-        //"375,667","667,375",
-        //"375,812","812,375",
-        "480,800","800,480",
-        "517,826","826,517",
-        "600,800","800,600",
-        "600,1080","1080,600",
-        "810,1080","1080,810",
-        "900,1000","1000,900",
-        "939,587","587,939",
-        "981,613","613,981",
-        "1024,1024",
-        "1024,1280","1280,1024",
-        "1128,752",
-        "1200,1280","1280,1200",
-        "1200,1920","1920,1200",
-        "1200,3000",
-        "1206,1431","1431,1206",
-        "1232,1524","1524,1232",
-        "1262,1440","1440,1262",
-        "1312,1332",
-        "1366,1366",
-        "1463,823",
-        "1536,864",
-        "1600,1000",
-        "1600,1600",
-        "1664,1110",
-        "1707,960",
-        "1707,1067",
-        "1720,720",
-        "1873,1103",
-        "1895,1039",
-        "1938,1068",
-        "3072,1728",
+      "0,0",
+      //"360,780","780,360",
+      //"375,667","667,375",
+      //"375,812","812,375",
+      "480,800","800,480",
+      "517,826","826,517",
+      "600,800","800,600",
+      "600,1080","1080,600",
+      "810,1080","1080,810",
+      "900,1000","1000,900",
+      "939,587","587,939",
+      "981,613","613,981",
+      "1024,1024",
+      "1024,1280","1280,1024",
+      "1128,752",
+      "1200,1280","1280,1200",
+      "1200,1920","1920,1200",
+      "1200,3000",
+      "1206,1431","1431,1206",
+      "1232,1524","1524,1232",
+      "1262,1440","1440,1262",
+      "1280,1280",
+      "1312,1332",
+      "1366,1366",
+      "1463,823",
+      "1536,864",
+      "1600,1000",
+      "1600,1600",
+      "1664,1110",
+      "1707,960",
+      "1707,1067",
+      "1720,720",
+      "1873,1103",
+      "1895,1039",
+      "1938,1068",
+      "3072,1728",
     ]);
 
     const is_undefined = (typeof window === 'undefined' || typeof screen === 'undefined');
@@ -173,7 +174,7 @@
     if (is_undefined) return false;
 
     const my_res_pair = `${screen.width},${screen.height}`;
-    
+
     const my_lang_pair = navigator.languages ? navigator.languages.join(',') : navigator.language;
 
     const isResSuspicious = suspicious_resolutions.has(my_res_pair);
@@ -181,29 +182,7 @@
 
     return isResSuspicious && isLangSuspicious;
   }*/
- 
-  function isSuspiciousRegion(){
-    const suspicious_patterns = [
-      "America/Mexico_City,zh-CN,zh",
-      "Asia/Hong_Kong,zh-CN,zh",
-      "Asia/Singapore,zh-CN,zh",
-    ];
 
-    const is_undefined = (
-      typeof window === 'undefined' || 
-      typeof navigator === 'undefined' ||
-      typeof Intl === 'undefined'
-    );
-    if (is_undefined) return false;
-
-    const my_tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const my_langs = navigator.languages ? navigator.languages.join(',') : navigator.language;
-
-    const current_status = `${my_tz},${my_langs}`;
-
-    return suspicious_patterns.some(pattern => current_status === pattern);
-  }
-  
   function isSuspiciousCombination() {
     const suspicious_patterns = [
       "800,600,America/New_York,en-US",
@@ -264,6 +243,12 @@
       //"1920,1080,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1920,1080,Asia/Tokyo,vi-VN,vi,fr-FR,fr,en-US,en",
       "1920,1080,Europe/Moscow,tr-TR,tr,en-US,en",
+      "1920,1080,America/Chicago,en-US,en",
+      "1920,1080,America/Denver,en-US,en",
+      "1920,1080,America/Los_Angeles,en-US,en",
+      "1920,1080,America/Mexico_City,en-US,en",
+      "1920,1080,America/New_York,en-US,en",
+      "1920,1080,America/Phoenix,en-US,en",
       "2048,1152,Asia/Tokyo,ja-JP,en-US,ja,en",
       "2560,1440,Asia/Tokyo,en-US,en",
       "2560,1440,Asia/Tokyo,ja,en-US,en,zh-CN",
@@ -288,6 +273,28 @@
     return suspicious_patterns.some(pattern => current_status === pattern);
   }
 
+  function isSuspiciousQuery(){
+    const suspicious_keys = new Set([
+      'ad_format_ids',
+      'sua',
+      'gclid',
+      'fbclid',   // Facebookの追跡ID（不要な場合）
+      'msclkid',  // Microsoft広告の追跡ID
+    ]);
+
+    const query_params = new URLSearchParams(window.location.search);
+
+    let isSuspicious = false;
+    for (const key of query_params.keys()) {
+      if (suspicious_keys.has(key)) {
+        isSuspicious = true;
+        break;
+      }
+    }
+
+    return isSuspicious;
+  }
+
   function is360browser(){
     const ua = navigator.userAgent;
 
@@ -306,8 +313,7 @@
     const ua = navigator.userAgent;
     const reg = /HeadlessChrome/i;
 
-    const isSuspicious = (navigator.webdriver === true) || reg.test(ua);
-    return isSuspicious;
+    return (navigator.webdriver === true) || reg.test(ua);
   }
 
   function isServerside(){
