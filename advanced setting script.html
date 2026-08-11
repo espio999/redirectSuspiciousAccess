@@ -245,12 +245,6 @@
       //"1920,1080,Asia/Tokyo,ja-JP,en-US,ja,en",
       "1920,1080,Asia/Tokyo,vi-VN,vi,fr-FR,fr,en-US,en",
       "1920,1080,Europe/Moscow,tr-TR,tr,en-US,en",
-      "1920,1080,America/Chicago,en-US,en",
-      "1920,1080,America/Denver,en-US,en",
-      "1920,1080,America/Los_Angeles,en-US,en",
-      "1920,1080,America/Mexico_City,en-US,en",
-      "1920,1080,America/New_York,en-US,en",
-      "1920,1080,America/Phoenix,en-US,en",
       "2048,1152,Asia/Tokyo,ja-JP,en-US,ja,en",
       "2560,1440,Asia/Tokyo,en-US,en",
       "2560,1440,Asia/Tokyo,ja,en-US,en,zh-CN",
@@ -325,8 +319,6 @@
   }
 
   function is360browser(){
-    const ua = navigator.userAgent;
-
     // 360 secure browser検出の正規表現
     const list_360 = [
       '360se',
@@ -335,44 +327,43 @@
     ];
 
     const reg_360 = new RegExp(list_360.join('|'), 'i');
-    return !!(ua && reg_360.test(ua));
+    return !!(ua_inline && reg_360.test(ua_inline));
   }
 
   function isHeadless(){
-    const ua = navigator.userAgent;
     const reg = /HeadlessChrome/i;
 
-    return (navigator.webdriver === true) || reg.test(ua);
+    return (navigator.webdriver === true) || reg.test(ua_inline);
   }
 
   function isServerside(){
     return (typeof window === 'undefined' || typeof screen === 'undefined')
   }
 
-  function getOs(ua){
+  function getOs(){
     // 簡単なOS・ブラウザ判別ロジック
     let os = "Unknown OS";
-    if (ua.indexOf("Win") != -1) os = "Windows";
-    if (ua.indexOf("Mac") != -1) os = "Mac OS";
-    if (ua.indexOf("Linux") != -1) os = "Linux";
-    if (ua.indexOf("Android") != -1) os = "Android";
-    if (ua.indexOf("like Mac") != -1) os = "iOS";
+    if (ua_inline.indexOf("Win") != -1) os = "Windows";
+    if (ua_inline.indexOf("Mac") != -1) os = "Mac OS";
+    if (ua_inline.indexOf("Linux") != -1) os = "Linux";
+    if (ua_inline.indexOf("Android") != -1) os = "Android";
+    if (ua_inline.indexOf("like Mac") != -1) os = "iOS";
     return os;
   }
 
-  function getBrowser(ua){
+  function getBrowser(){
     // 簡単なOS・ブラウザ判別ロジック
     let browser = "Unknown Browser";
-    if (ua.indexOf("Chrome") != -1) browser = "Chrome";
-    else if (ua.indexOf("Firefox") != -1) browser = "Firefox";
-    else if (ua.indexOf("Safari") != -1) browser = "Safari";
-    else if (ua.indexOf("Edge") != -1) browser = "Edge";
+    if (ua_inline.indexOf("Chrome") != -1) browser = "Chrome";
+    else if (ua_inline.indexOf("Firefox") != -1) browser = "Firefox";
+    else if (ua_inline.indexOf("Safari") != -1) browser = "Safari";
+    else if (ua_inline.indexOf("Edge") != -1) browser = "Edge";
     return browser;
   }
 
-  const ua = navigator.userAgent;
-  const os = getOs(ua);
-  const browser = getBrowser(ua);
+  const ua_inline = navigator.userAgent;
+  const os = getOs();
+  const browser = getBrowser();
 
   const isDirectAccess = !document.referrer;
   const isSuspiciousBot = !(isFriendlyBot_inline() && !isE2Etest_inline());
@@ -623,7 +614,7 @@
                 { name: "isNoReferrer", value: window.FLAG_MAP.isNoReferrer, inline: true },
                 { name: "isRedirected", value: window.FLAG_MAP.isRedirected, inline: true },
                 { name: "Comment", value: window.FLAG_MAP.reason || "なし", inline: false },
-                { name: "UserAgent", value: `\`\`\`${ua}\`\`\``, inline: false }
+                { name: "UserAgent", value: `\`\`\`${ua_inline}\`\`\``, inline: false }
             ],
             timestamp: new Date().toISOString()
         }]
