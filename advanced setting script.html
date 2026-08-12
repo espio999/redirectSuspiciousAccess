@@ -292,7 +292,7 @@
     const my_tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const my_langs = navigator.languages ? navigator.languages.join(',') : navigator.language;
 
-    const current_status = `${os},${browser},${my_res},${my_tz},${my_langs}`;
+    const current_status = `${MY_OS},${MY_BROWSER},${my_res},${my_tz},${my_langs}`;
 
     return suspicious_patterns.some(pattern => current_status === pattern);
   }
@@ -328,13 +328,13 @@
     ];
 
     const reg_360 = new RegExp(list_360.join('|'), 'i');
-    return !!(ua_inline && reg_360.test(ua_inline));
+    return !!(UA_INLINE && reg_360.test(UA_INLINE));
   }
 
   function isHeadless(){
     const reg = /HeadlessChrome/i;
 
-    return (navigator.webdriver === true) || reg.test(ua_inline);
+    return (navigator.webdriver === true) || reg.test(UA_INLINE);
   }
 
   function isServerside(){
@@ -344,27 +344,27 @@
   function getOs(){
     // 簡単なOS・ブラウザ判別ロジック
     let os = "Unknown OS";
-    if (ua_inline.indexOf("Win") != -1) os = "Windows";
-    if (ua_inline.indexOf("Mac") != -1) os = "Mac OS";
-    if (ua_inline.indexOf("Linux") != -1) os = "Linux";
-    if (ua_inline.indexOf("Android") != -1) os = "Android";
-    if (ua_inline.indexOf("like Mac") != -1) os = "iOS";
+    if (UA_INLINE.indexOf("Win") != -1) os = "Windows";
+    if (UA_INLINE.indexOf("Mac") != -1) os = "Mac OS";
+    if (UA_INLINE.indexOf("Linux") != -1) os = "Linux";
+    if (UA_INLINE.indexOf("Android") != -1) os = "Android";
+    if (UA_INLINE.indexOf("like Mac") != -1) os = "iOS";
     return os;
   }
 
   function getBrowser(){
     // 簡単なOS・ブラウザ判別ロジック
     let browser = "Unknown Browser";
-    if (ua_inline.indexOf("Chrome") != -1) browser = "Chrome";
-    else if (ua_inline.indexOf("Firefox") != -1) browser = "Firefox";
-    else if (ua_inline.indexOf("Safari") != -1) browser = "Safari";
-    else if (ua_inline.indexOf("Edge") != -1) browser = "Edge";
+    if (UA_INLINE.indexOf("Chrome") != -1) browser = "Chrome";
+    else if (UA_INLINE.indexOf("Firefox") != -1) browser = "Firefox";
+    else if (UA_INLINE.indexOf("Safari") != -1) browser = "Safari";
+    else if (UA_INLINE.indexOf("Edge") != -1) browser = "Edge";
     return browser;
   }
 
-  const ua_inline = navigator.userAgent;
-  const os = getOs();
-  const browser = getBrowser();
+  const UA_INLINE = navigator.userAgent;
+  const MY_OS = getOs();
+  const MY_BROWSER = getBrowser();
 
   const isDirectAccess = !document.referrer;
   const isSuspiciousBot = !(isFriendlyBot_inline() && !isE2Etest_inline());
@@ -615,7 +615,7 @@
                 { name: "isNoReferrer", value: window.FLAG_MAP.isNoReferrer, inline: true },
                 { name: "isRedirected", value: window.FLAG_MAP.isRedirected, inline: true },
                 { name: "Comment", value: window.FLAG_MAP.reason || "なし", inline: false },
-                { name: "UserAgent", value: `\`\`\`${ua_inline}\`\`\``, inline: false }
+                { name: "UserAgent", value: `\`\`\`${UA_INLINE}\`\`\``, inline: false }
             ],
             timestamp: new Date().toISOString()
         }]
