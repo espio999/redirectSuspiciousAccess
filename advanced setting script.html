@@ -93,6 +93,7 @@
     const suspicious_patterns = [
       'America//Los_Angeles,zh-CN,zh',
       'America/Mexico_City,zh-CN,zh',
+      'Asia/Hong_Kong,zh-CN',
       'Asia/Hong_Kong,zh-CN,zh',
       'Asia/Singapore,zh-CN,zh',
     ];
@@ -356,9 +357,9 @@
     // 簡単なOS・ブラウザ判別ロジック
     let browser = "Unknown Browser";
     if (UA_INLINE.indexOf("Chrome") != -1) browser = "Chrome";
-    else if (UA_INLINE.indexOf("Firefox") != -1) browser = "Firefox";
-    else if (UA_INLINE.indexOf("Safari") != -1) browser = "Safari";
-    else if (UA_INLINE.indexOf("Edge") != -1) browser = "Edge";
+    if (UA_INLINE.indexOf("Firefox") != -1) browser = "Firefox";
+    if (UA_INLINE.indexOf("Safari") != -1) browser = "Safari";
+    if (UA_INLINE.indexOf("Edge") != -1) browser = "Edge";
     return browser;
   }
 
