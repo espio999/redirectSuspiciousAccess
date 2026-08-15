@@ -91,6 +91,7 @@
 
   function isSuspiciousRegion(){
     const suspicious_patterns = [
+      'America//Los_Angeles,zh-CN',
       'America//Los_Angeles,zh-CN,zh',
       'America/Mexico_City,zh-CN,zh',
       'Asia/Hong_Kong,zh-CN',
@@ -279,6 +280,7 @@
       "Linux,Chrome,1920,1080,America/Mexico_City,en-US,en",
       "Linux,Chrome,1920,1080,America/New_York,en-US,en",
       "Linux,Chrome,1920,1080,America/Phoenix,en-US,en",
+      "Windows,Chrome,1920,1080,America/New_York,en-US,en",
     ];
 
     const is_undefined = (
@@ -356,10 +358,10 @@
   function getBrowser(){
     // 簡単なOS・ブラウザ判別ロジック
     let browser = "Unknown Browser";
-    if (UA_INLINE.indexOf("Chrome") != -1) browser = "Chrome";
     if (UA_INLINE.indexOf("Firefox") != -1) browser = "Firefox";
     if (UA_INLINE.indexOf("Safari") != -1) browser = "Safari";
     if (UA_INLINE.indexOf("Edge") != -1) browser = "Edge";
+    if (UA_INLINE.indexOf("Chrome") != -1) browser = "Chrome";
     return browser;
   }
 
