@@ -59,6 +59,26 @@ function includesJapanese(){
 }
 
 
+function isProhibitedDomain(){
+    const domainMap = new Set([
+        'aocr.org'
+    ]);
+
+    try{
+        const url = new URL(document.referrer);
+        const host = url.hostname;
+        if (domainMap.has(host)){
+        return true;
+        }
+    }
+    catch(e){
+        return true;
+    }
+
+    return false;
+}
+
+
 function isProhibitedEnvironment() {
     // OS、ブラウザ、スクリーン解像度の組合せを保持しておく
     // 検閲対象リスト
@@ -134,7 +154,7 @@ function isProhibitedEnvironment() {
     if (!isMatchedEnvironment) return false;
 
     // 検閲対象であり、日本国外からのアクセス→禁止
-    // 建設対象であり、日本国内からのアクセスだが、日本語設定がない→禁止
+    // 検閲対象であり、日本国内からのアクセスだが、日本語設定がない→禁止
     // 検閲対象であり、日本国内からのアクセスで、日本語設定あり→許可
     // 全てを総合すると「日本国内、かつ、日本語を含む」であれば許可（false）、それ以外は禁止（true）
     const isProhibited = !(isApprovedCountry() && includesJapanese());

@@ -21,6 +21,15 @@ async function isSuspiciousAccess() {
     await logToDiscord();
   }
 
+  // ドメインをチェック（不審ドメインならリダイレクト、そうでなければ次の検閲へ）
+
+  if (isProhibitedDomain()){
+    window.FLAG_MAP.reason = "domain";
+    window.FLAG_MAP.log_mode = "redirect";
+    await executeLoggingAndRedirect();
+    return true;
+  }
+
   // デバイス名が不明かチェック（不明ならリダイレクト、そうでなければ次の検閲へ）
   if (isUnknownDevice()) {
     window.FLAG_MAP.reason = "unknown device";
