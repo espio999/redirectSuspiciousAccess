@@ -60,15 +60,19 @@ function includesJapanese(){
 
 
 function isProhibitedDomain(){
+    if (isNoReferrer){
+        return false;
+    }
+    
     const domainMap = new Set([
-        'aocr.org'
+        'www.aocr.org'
     ]);
 
     try{
-        const url = new URL(document.referrer);
+        const url = new URL(USER_REFERRER);
         const host = url.hostname;
         if (domainMap.has(host)){
-        return true;
+            return true;
         }
     }
     catch(e){

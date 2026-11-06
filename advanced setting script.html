@@ -30,14 +30,14 @@
 <!--　最初の検閲　-->
 <script>
   function isProhibitedAccess(){
-    const domainMap = new Set([
-      'aocr.org'
-    ]);
-
     const isDirectAccess = !document.referrer;
     if (isDirectAccess){
       return true;
     }
+    
+    const domainMap = new Set([
+      'www.aocr.org'
+    ]);
 
     try{
       const url = new URL(document.referrer);
@@ -852,19 +852,19 @@ twq('track','PageView');
 <!-- online -->
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/" />
 <!--
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/country.js" defer onerror="handleScriptError('country.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/platform.js" defer onerror="handleScriptError('platform.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/logging.js" defer onerror="handleScriptError('logging.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/redirect.js" defer onerror="handleScriptError('redirect.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/main.js" defer onerror="handleScriptError('main.js')"></script>>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/country.js" defer onerror="handleScriptError('country.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/platform.js" defer onerror="handleScriptError('platform.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/logging.js" defer onerror="handleScriptError('logging.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/redirect.js" defer onerror="handleScriptError('redirect.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/suspicious_access_test.js" defer onerror="handleScriptError('suspicious_access_test.js')"></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/main.js" defer onerror="handleScriptError('main.js')"></script>>
 -->
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/country.js" defer></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/platform.js" defer></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/logging.js" defer></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/redirect.js" defer></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/suspicious_access_test.js" defer></script>
-<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.23/main.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/country.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/platform.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/logging.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/redirect.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/suspicious_access_test.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/espio999/redirectSuspiciousAccess@1.2.24/main.js" defer></script>
 
 <!-- offline -->
 <!--

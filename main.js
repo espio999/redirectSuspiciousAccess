@@ -22,7 +22,6 @@ async function isSuspiciousAccess() {
   }
 
   // ドメインをチェック（不審ドメインならリダイレクト、そうでなければ次の検閲へ）
-
   if (isProhibitedDomain()){
     window.FLAG_MAP.reason = "domain";
     window.FLAG_MAP.log_mode = "redirect";
