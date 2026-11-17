@@ -29,7 +29,7 @@
 
 <!--　最初の検閲　-->
 <script>
-  function isProhibitedAccess(){
+  function isSuspiciousAccess(){
     const isDirectAccess = !document.referrer;
     if (isDirectAccess){
       return true;
@@ -125,6 +125,8 @@
       'Asia/Hong_Kong,zh-CN,zh',
       'Asia/Singapore,zh-CN',
       'Asia/Singapore,zh-CN,zh',
+      'UTC,en-US',
+      'UTC,en-US,en',
     ];
 
     const is_undefined = (
@@ -305,13 +307,19 @@
   function isSuspiciousFingerprint() {
     const suspicious_patterns = [
       "iOS,Safari,390,844,Asia/Tokyo,en-US",
+      "Linux,Chrome,1280,800,UTC,en-US,en",
+      "Linux,Chrome,1536,960,Asia/Hong_Kong,en-US,en",
       "Linux,Chrome,1920,1080,America/Chicago,en-US,en",
       "Linux,Chrome,1920,1080,America/Denver,en-US,en",
       "Linux,Chrome,1920,1080,America/Los_Angeles,en-US,en",
       "Linux,Chrome,1920,1080,America/Mexico_City,en-US,en",
       "Linux,Chrome,1920,1080,America/New_York,en-US,en",
       "Linux,Chrome,1920,1080,America/Phoenix,en-US,en",
+      "Windows,Chrome,1280,720,UTC,en-US,en",
+      "Windows,Chrome,1920,1080,Asia/Hong_Kong,en-US",
+      "Windows,Chrome,1920,1080,Asia/Singapore,ja,en-US,en",
       "Windows,Chrome,1920,1080,America/New_York,en-US,en",
+      "Windows,Chrome,2560,1600,America/New_York,en-US,en",
     ];
 
     const is_undefined = (
@@ -403,7 +411,7 @@
   //const isDirectAccess = !document.referrer;
   const isSuspiciousBot = !(isFriendlyBot_inline() && !isE2Etest_inline());
 
-  if (isProhibitedAccess() && isSuspiciousBot && (isSuspiciousTimezone() || isSuspiciousRegion() || isSuspiciousResolution() || isSuspiciousCombination() || isSuspiciousFingerprint() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside())) {
+  if (isSuspiciousAccess() && isSuspiciousBot && (isSuspiciousTimezone() || isSuspiciousRegion() || isSuspiciousResolution() || isSuspiciousCombination() || isSuspiciousFingerprint() || isSuspiciousQuery() || is360browser() || isHeadless() || isServerside())) {
     window.stop();
     
     const destination_url = "https://0.0.0.0";
